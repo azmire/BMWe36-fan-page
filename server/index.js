@@ -5,7 +5,7 @@ import express from "express";
 import cors from "cors";
 import userRouter from "./routes/userRoutes.js";
 import mongoose from "mongoose";
-import { UserModel } from "./models/userModel.js";
+/* import { UserModel } from "./models/userModel.js"; */
 
 const app = express();
 app.use(express.json());
@@ -34,16 +34,3 @@ app.use("/api/users", userRouter);
 app.use("*", (req, res) =>
   res.status(404).json({ error: "Endpoint not found." })
 );
-
-app.get("/api/users/allusers", async (req, res) => {
-  const user = new UserModel({
-    email: "iami@iami.com",
-    username: "iami",
-    password: "iami",
-  });
-  try {
-    await user.save();
-  } catch (err) {
-    console.log("err :>> ", err);
-  }
-});
