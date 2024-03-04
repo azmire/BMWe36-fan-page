@@ -35,7 +35,7 @@ app.use("*", (req, res) =>
   res.status(404).json({ error: "Endpoint not found." })
 );
 
-app.get("/", async (req, res) => {
+app.get("/api/users/allusers", async (req, res) => {
   const user = new UserModel({
     email: "iami@iami.com",
     username: "iami",
