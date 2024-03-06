@@ -4,6 +4,8 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import userRouter from "./routes/userRoutes.js";
+import postRouter from "./routes/postRoutes.js";
+import commentRouter from "./routes/commentRoutes.js";
 import mongoose from "mongoose";
 /* import { UserModel } from "./models/userModel.js"; */
 
@@ -30,6 +32,8 @@ mongoose
   .catch((err) => console.log(err));
 
 app.use("/api/users", userRouter);
+app.use("/api/posts", postRouter);
+app.use("/api/comments", commentRouter);
 
 app.use("*", (req, res) =>
   res.status(404).json({ error: "Endpoint not found." })

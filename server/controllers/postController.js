@@ -1,0 +1,20 @@
+import { PostModel } from "../models/postModel.js";
+
+export const getPosts = async (req, res) => {
+  try {
+    const allPosts = await PostModel.find();
+    res.status(200).json(allPosts);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const addPost = async (req, res) => {
+  try {
+    const post = new PostModel(req.body);
+    const newPost = await post.save();
+    res.status(200).json(newPost);
+  } catch (err) {
+    console.log(err);
+  }
+};
