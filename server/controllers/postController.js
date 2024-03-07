@@ -18,3 +18,19 @@ export const addPost = async (req, res) => {
     console.log(err);
   }
 };
+
+export const getPostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await PostModel.findById(id).populate({
+      path: "comments",
+    });
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    res.status(200).json(post);
+  } catch (err) {
+    console.error("Error fetching post by id:", err);
+    res.status(500).json({ message: "Error fetching post", err: err.message });
+  }
+};
