@@ -1,26 +1,75 @@
-import React from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
+import useFetch from "../hooks/useFetch";
+import { FaRegThumbsDown, FaThumbsUp } from "react-icons/fa";
+import { BiComment } from "react-icons/bi";
+import { FaRegThumbsUp, FaThumbsDown } from "react-icons/fa6";
+import Comment from "../Components/Comment";
 
 function Posts() {
+  const url = "http://localhost:9876/api/posts/allposts";
+  const { data, loading } = useFetch(url);
+  console.log("data :>> ", data);
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center ">
+        <Spinner animation="border" />
+      </div>
+    );
+  }
   return (
     <>
-      <Container className="py-3">
-        <Row>
-          <Col className="d-grid gap-3">
-            <Card style={{ width: "18rem" }}>
-              <Card.Img variant="top" src="holder.js/100px180" />
-              <Card.Body>
-                <Card.Title>Card Title</Card.Title>
-                <Card.Text>
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content.
-                </Card.Text>
-                <Button variant="primary">Go somewhere</Button>
-              </Card.Body>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+      {data &&
+        data.map((post) => {
+          console.log("post :>> ", post);
+          return (
+            <Container className="py-3" key={post._id}>
+              <Row>
+                <Col className="d-flex justify-content-center">
+                  <Card className="w-50 align-items-center ">
+                    <Card.Img
+                      variant="top"
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/1991-1996_BMW_318i_%28E36%29_sedan_03.jpg/1280px-1991-1996_BMW_318i_%28E36%29_sedan_03.jpg"
+                    />
+                    <Card.Body className="pb-1">
+                      <Card.Title>Your Car Card</Card.Title>
+                      <Card.Text>{post.description}</Card.Text>
+                      <Card.Text>
+                        <b>Production year:</b> {post.productionYear}
+                      </Card.Text>
+                      <Card.Text className="border-bottom mb-1">
+                        <b>Engine Type:</b> {post.engine}
+                      </Card.Text>
+                      <div className="d-flex justify-content-around">
+                        <Button
+                          className="text-secondary text-decoration-none align-middle"
+                          variant="link"
+                        >
+                          <FaRegThumbsUp />
+                          Like it!
+                        </Button>
+                        <Button
+                          className="text-secondary text-decoration-none align-middle"
+                          variant="link"
+                        >
+                          <FaRegThumbsDown />
+                          Dislike it!
+                        </Button>
+                        <Button
+                          className="text-secondary text-decoration-none align-middle"
+                          variant="link"
+                        >
+                          <BiComment />
+                          Comment
+                        </Button>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+            </Container>
+          );
+        })}
     </>
   );
 }

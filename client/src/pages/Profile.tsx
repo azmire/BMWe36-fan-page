@@ -8,13 +8,26 @@ import {
   Nav,
   Navbar,
   Row,
+  Spinner,
 } from "react-bootstrap";
 import "../styles/ProfilePage.css";
+import useFetch from "../hooks/useFetch";
 
 function Profile() {
+  const url = "http://localhost:9876/api/posts/65e876004b4278bf07da6a29";
+  const { data, loading } = useFetch(url);
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center ">
+        <Spinner animation="border" />
+      </div>
+    );
+  }
+
   return (
     <>
-      {/* user profile header image container*/}
+      {/* user profile header image container */}
       <div>
         <div className="d-grid align-items-top justify-content-center">
           <Row>
@@ -93,10 +106,7 @@ function Profile() {
                 <Card.Img variant="top" src="holder.js/100px180" />
                 <Card.Body>
                   <Card.Title>Card Title</Card.Title>
-                  <Card.Text>
-                    Some quick example text to build on the card title and make
-                    up the bulk of the card's content.
-                  </Card.Text>
+                  <Card.Text>{data.description}</Card.Text>
                   <Button variant="primary">Go somewhere</Button>
                 </Card.Body>
               </Card>

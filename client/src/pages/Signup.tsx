@@ -1,6 +1,12 @@
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 
 function Signup() {
+  // const handleChange = (e) => {
+  //   setFormObject({
+  //     ...formObject,
+  //     [e.target.name]: e.target.value,
+  //   });
+  // };
   return (
     <>
       <Container
