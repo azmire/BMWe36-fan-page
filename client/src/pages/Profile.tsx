@@ -12,9 +12,10 @@ import {
 } from "react-bootstrap";
 import "../styles/ProfilePage.css";
 import useFetch from "../hooks/useFetch";
+import ModalComponent from "../Components/CreateCardModal";
 
 function Profile() {
-  const url = "http://localhost:9876/api/posts/65e876004b4278bf07da6a29";
+  const url = "http://localhost:9876/api/posts/65e876004b4278bf07da6a29"; //fetching post for test only
   const { data, loading } = useFetch(url);
 
   if (loading) {
@@ -41,12 +42,12 @@ function Profile() {
           </Row>
         </div>
 
-        {/* user profile container */}
+        {/* user profile body container */}
         <Container className="d-grid justify-content-center justify-content-md-start px-5">
           <Row>
             <Col>
               <Image
-                className="profile-image"
+                className="profile-image" //user image rounded
                 style={{ height: "35vh", width: "35vh" }}
                 src="src/assets/e36-silhouette.jpeg"
                 roundedCircle
@@ -56,6 +57,8 @@ function Profile() {
               </div>
             </Col>
           </Row>
+
+          {/* edit profile navbar */}
           <Row>
             <Navbar bg="light" data-bs-theme="light">
               <Container>
@@ -69,44 +72,88 @@ function Profile() {
           </Row>
         </Container>
       </div>
+
       <div className="background pt-3">
         <Container>
           <Row>
             <Col xs lg="4">
-              <Card /* style={{ width: "18rem" }} */>
-                <Card.Header>Featured</Card.Header>
+              <Card className="h-100">
+                <Card.Header>
+                  <b>User info</b>
+                </Card.Header>
                 <ListGroup variant="flush">
-                  <ListGroup.Item>Cras justo odio</ListGroup.Item>
-                  <ListGroup.Item>Dapibus ac facilisis in</ListGroup.Item>
-                  <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
+                  <ListGroup.Item>From: Sinj, Croatia</ListGroup.Item>
+                  <ListGroup.Item>Member since March 2024.</ListGroup.Item>
+                  <ListGroup.Item>
+                    Member of BMW oldtimer club CRO
+                  </ListGroup.Item>
                 </ListGroup>
               </Card>
             </Col>
             <Col lg="8">
               <Card>
-                <Card.Header as="h5">Featured</Card.Header>
+                <Card.Header as="h5">
+                  <b>Add a new card</b>
+                </Card.Header>
                 <Card.Body>
-                  <Card.Title>Special title treatment</Card.Title>
+                  <Card.Title>
+                    Click the button below to add a new card with your car info
+                  </Card.Title>
                   <Card.Text>
-                    With supporting text below as a natural lead-in to
-                    additional content.
+                    You have just finished Your new prject? Share it with us!
+                    Upload some photos and give us short description about Your
+                    car.
                   </Card.Text>
-                  <Button variant="primary">Go somewhere</Button>
+                  <ModalComponent />
                 </Card.Body>
               </Card>
             </Col>
           </Row>
         </Container>
       </div>
+
+      {/* only cards posted by user */}
       <div className="background pt-3">
-        <Container className="pb-3">
-          <Row>
-            <Col className="d-grid gap-3">
-              <Card style={{ width: "18rem" }}>
+        <Container className="pb-3 ">
+          <Row className="d-flex justify-content-center">
+            <Col className="col-xl-6 pb-3">
+              <Card>
                 <Card.Img variant="top" src="holder.js/100px180" />
                 <Card.Body>
                   <Card.Title>Card Title</Card.Title>
                   <Card.Text>{data.description}</Card.Text>
+                  <Card.Text>
+                    <b>Production Year: </b>
+                    {data.productionYear}
+                  </Card.Text>
+                  <Button variant="primary">Go somewhere</Button>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col className="col-xl-6">
+              <Card>
+                <Card.Img variant="top" src="holder.js/100px180" />
+                <Card.Body>
+                  <Card.Title>Card Title</Card.Title>
+                  <Card.Text>{data.description}</Card.Text>
+                  <Card.Text>
+                    <b>Production Year: </b>
+                    {data.productionYear}
+                  </Card.Text>
+                  <Button variant="primary">Go somewhere</Button>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col className="col-xl-6">
+              <Card>
+                <Card.Img variant="top" src="holder.js/100px180" />
+                <Card.Body>
+                  <Card.Title>Card Title</Card.Title>
+                  <Card.Text>{data.description}</Card.Text>
+                  <Card.Text>
+                    <b>Production Year: </b>
+                    {data.productionYear}
+                  </Card.Text>
                   <Button variant="primary">Go somewhere</Button>
                 </Card.Body>
               </Card>

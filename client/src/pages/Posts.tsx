@@ -1,14 +1,12 @@
 import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
 import useFetch from "../hooks/useFetch";
-import { FaRegThumbsDown, FaThumbsUp } from "react-icons/fa";
 import { BiComment } from "react-icons/bi";
-import { FaRegThumbsUp, FaThumbsDown } from "react-icons/fa6";
-import Comment from "../Components/Comment";
+import LikeButton from "../Components/LikeButton";
+import DislikeButton from "../Components/DislikeButton";
 
 function Posts() {
-  const url = "http://localhost:9876/api/posts/allposts";
+  const url = "http://localhost:9876/api/posts/allposts"; //fetching all posts from db
   const { data, loading } = useFetch(url);
-  console.log("data :>> ", data);
 
   if (loading) {
     return (
@@ -32,7 +30,7 @@ function Posts() {
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/1991-1996_BMW_318i_%28E36%29_sedan_03.jpg/1280px-1991-1996_BMW_318i_%28E36%29_sedan_03.jpg"
                     />
                     <Card.Body className="pb-1">
-                      <Card.Title>Your Car Card</Card.Title>
+                      <Card.Title>318i Limousine</Card.Title>
                       <Card.Text>{post.description}</Card.Text>
                       <Card.Text>
                         <b>Production year:</b> {post.productionYear}
@@ -41,20 +39,8 @@ function Posts() {
                         <b>Engine Type:</b> {post.engine}
                       </Card.Text>
                       <div className="d-flex justify-content-around">
-                        <Button
-                          className="text-secondary text-decoration-none align-middle"
-                          variant="link"
-                        >
-                          <FaRegThumbsUp />
-                          Like it!
-                        </Button>
-                        <Button
-                          className="text-secondary text-decoration-none align-middle"
-                          variant="link"
-                        >
-                          <FaRegThumbsDown />
-                          Dislike it!
-                        </Button>
+                        <LikeButton />
+                        <DislikeButton />
                         <Button
                           className="text-secondary text-decoration-none align-middle"
                           variant="link"
