@@ -2,7 +2,7 @@ import { PostModel } from "../models/postModel.js";
 
 export const getPosts = async (req, res) => {
   try {
-    const allPosts = await PostModel.find();
+    const allPosts = await PostModel.find().populate({ path: "comments" });
     res.status(200).json(allPosts);
   } catch (e) {
     console.log(e);

@@ -1,12 +1,14 @@
 import * as dotenv from "dotenv";
 // loading .env file
 dotenv.config();
+
 import express from "express";
 import cors from "cors";
 import userRouter from "./routes/userRoutes.js";
 import postRouter from "./routes/postRoutes.js";
 import commentRouter from "./routes/commentRoutes.js";
 import mongoose from "mongoose";
+import { cloudinaryConfig } from "./config/cloudinary.js";
 /* import { UserModel } from "./models/userModel.js"; */
 
 const app = express();
@@ -17,6 +19,8 @@ app.use(
   })
 );
 app.use(cors());
+
+cloudinaryConfig();
 
 const port = process.env.PORT || 9999;
 mongoose
