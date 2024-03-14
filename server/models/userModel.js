@@ -7,8 +7,11 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     avatar: {
       type: String,
-      default:
-        "https://www.freedigitalphotos.net/images/img/homepage/87357.jpg",
+      default: "src/assets/avatar-jpg.jpeg",
+    },
+    imagePlaceholder: {
+      type: String,
+      default: "src/assets/image-placeholder.jpeg",
     },
   },
   { timestamps: true }

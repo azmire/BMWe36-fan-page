@@ -4,7 +4,11 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import SelectProductionYear from "./SelectOptions";
 
-function ModalComponent() {
+declare type ModalProps = {
+  placeholder: string;
+};
+
+function ModalComponent({ placeholder }: ModalProps) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -30,7 +34,7 @@ function ModalComponent() {
             <Row>
               <Col>
                 <Card>
-                  <Card.Img variant="top"></Card.Img>
+                  <Card.Img variant="top" src={placeholder}></Card.Img>
                   <Form>
                     <Form.Group
                       className="mb-3"

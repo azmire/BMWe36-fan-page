@@ -7,9 +7,9 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [image, setImage] = useState<File | undefined>(undefined);
 
-  const handleImageUpload = (e) => {
-    setImage(e.target.files[0]);
-  };
+  // const handleImageUpload = (e) => {
+  //   setImage(e.target.files[0]);
+  // };
 
   const handleRegister = () => {
     const formdata = new FormData();
@@ -95,7 +95,7 @@ function Signup() {
               onChange={handleRepeatPasswordChange} */
             />
           </Form.Group>
-          <input type="file" name="image" onChange={handleImageUpload} />
+          {/* <input type="file" name="image" onChange={handleImageUpload} /> */}
           <Button
             className="d-grid col-12 mx-auto mt-4"
             variant="success"

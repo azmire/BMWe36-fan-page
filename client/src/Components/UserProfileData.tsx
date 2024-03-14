@@ -10,10 +10,11 @@ import {
 } from "react-bootstrap";
 import ModalComponent from "./CreateCardModal";
 import useFetch from "../hooks/useFetch";
+import { UserData } from "../types/dataTypes";
 
 function UserProfileData() {
-  const url = "http://localhost:9876/api/users/65f1b6fd6b25fbf48f8fa44f";
-  const { data, loading } = useFetch(url);
+  const url = "http://localhost:9876/api/users/65f2e332045e9b76e9b17003";
+  let { data } = useFetch(url) as unknown as UserData;
   console.log("data :>> ", data);
   return (
     <div>
@@ -24,7 +25,7 @@ function UserProfileData() {
             <Col sm={12}>
               <Image
                 style={{ width: "80vw", height: "50vh" }}
-                src="src/assets/e36-silhouette.jpeg"
+                src={data.imagePlaceholder}
                 fluid
               />
             </Col>
@@ -38,11 +39,11 @@ function UserProfileData() {
               <Image
                 className="profile-image" //user image rounded
                 style={{ height: "35vh", width: "35vh" }}
-                src="src/assets/e36-silhouette.jpeg"
+                src={data.avatar}
                 roundedCircle
               />
               <div className="d-flex justify-content-center">
-                <h2>Anđelo Žmire</h2>
+                <h2>{data.username}</h2>
               </div>
             </Col>
           </Row>
@@ -72,7 +73,7 @@ function UserProfileData() {
                 </Card.Header>
                 <ListGroup variant="flush">
                   <ListGroup.Item>From: Sinj, Croatia</ListGroup.Item>
-                  <ListGroup.Item>Member since March 2024.</ListGroup.Item>
+                  <ListGroup.Item>Member since {data.createdAt}</ListGroup.Item>
                   <ListGroup.Item>
                     Member of BMW oldtimer club CRO
                   </ListGroup.Item>
@@ -93,7 +94,7 @@ function UserProfileData() {
                     Upload some photos and give us short description about Your
                     car.
                   </Card.Text>
-                  <ModalComponent />
+                  <ModalComponent placeholder={data.imagePlaceholder} />
                 </Card.Body>
               </Card>
             </Col>
