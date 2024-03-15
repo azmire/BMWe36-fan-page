@@ -5,7 +5,7 @@ function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [image, setImage] = useState<File | undefined>(undefined);
+  //const [image, setImage] = useState<File | undefined>(undefined);
 
   // const handleImageUpload = (e) => {
   //   setImage(e.target.files[0]);
@@ -16,9 +16,9 @@ function Signup() {
     formdata.append("email", email);
     formdata.append("username", username);
     formdata.append("password", password);
-    if (image) {
-      formdata.append("avatar", image);
-    }
+    // if (image) {
+    //   formdata.append("avatar", image);
+    // }
 
     const requestOptions = {
       method: "POST",

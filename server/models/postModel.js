@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
 
 const postSchema = new mongoose.Schema({
+  caption: String,
   description: String,
-  productionYear: Number,
-  engine: String,
+  productionYear: String,
+  engineCode: String,
+  cardImage: String,
+  carModel: String,
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
 });
 

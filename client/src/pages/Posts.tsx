@@ -25,18 +25,18 @@ function Posts() {
               <Row>
                 <Col className="d-flex justify-content-center">
                   <Card className="w-50 align-items-center ">
-                    <Card.Img
-                      variant="top"
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/1991-1996_BMW_318i_%28E36%29_sedan_03.jpg/1280px-1991-1996_BMW_318i_%28E36%29_sedan_03.jpg"
-                    />
-                    <Card.Body className="pb-1">
-                      <Card.Title>318i Limousine</Card.Title>
+                    <Card.Img variant="top" src={post.cardImage} />
+                    <Card.Body className="pb-1 w-100">
+                      <Card.Title>{post.caption}</Card.Title>
                       <Card.Text>{post.description}</Card.Text>
+                      <Card.Text>
+                        <b>Car model:</b> {post.carModel}
+                      </Card.Text>
                       <Card.Text>
                         <b>Production year:</b> {post.productionYear}
                       </Card.Text>
                       <Card.Text className="border-bottom mb-1">
-                        <b>Engine Type:</b> {post.engine}
+                        <b>Engine Type:</b> {post.engineCode}
                       </Card.Text>
                       <div className="d-flex justify-content-around">
                         <LikeButton />

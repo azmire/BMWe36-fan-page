@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   Col,
   Container,
@@ -11,6 +12,7 @@ import {
 import ModalComponent from "./CreateCardModal";
 import useFetch from "../hooks/useFetch";
 import { UserData } from "../types/dataTypes";
+import { MdAddAPhoto } from "react-icons/md";
 
 function UserProfileData() {
   const url = "http://localhost:9876/api/users/65f2e332045e9b76e9b17003";
@@ -30,6 +32,10 @@ function UserProfileData() {
               />
             </Col>
           </Row>
+          <Button className="add-cover-photo">
+            <MdAddAPhoto size={30} />{" "}
+            <div className="ps-4">Change cover image</div>
+          </Button>
         </div>
 
         {/* user profile body container */}
@@ -37,11 +43,17 @@ function UserProfileData() {
           <Row>
             <Col>
               <Image
-                className="profile-image" //user image rounded
+                className="profile-image " //user image rounded
                 style={{ height: "35vh", width: "35vh" }}
                 src={data.avatar}
                 roundedCircle
               />
+              <Button
+                variant="secondary"
+                className="add-image-button rounded-circle"
+              >
+                <MdAddAPhoto size={80} />
+              </Button>
               <div className="d-flex justify-content-center">
                 <h2>{data.username}</h2>
               </div>

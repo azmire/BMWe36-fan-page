@@ -1,4 +1,6 @@
+import { model } from "mongoose";
 import { PostModel } from "../models/postModel.js";
+import { imageUpload } from "../utils/uploadImage.js";
 
 export const getPosts = async (req, res) => {
   try {
@@ -10,10 +12,38 @@ export const getPosts = async (req, res) => {
 };
 
 export const addPost = async (req, res) => {
+  const { description, productionYear, engineCode, carModel, caption } =
+    req.body;
+
   try {
-    const post = new PostModel(req.body);
-    const newPost = await post.save();
-    res.status(200).json(newPost);
+    const attachedFile = req.file != undefined;
+
+    if (attachedFile) {
+      console.log("creating post with card image");
+      const uploadedImage = await imageUpload(req.file, "cardImage");
+      const { secure_url, public_id } = uploadedImage;
+      const post = new PostModel({
+        caption: caption,
+        description: description,
+        productionYear: productionYear,
+        engineCode: engineCode,
+        cardImage: secure_url,
+        carModel: carModel,
+      });
+      const newPost = await post.save();
+      res.status(200).json(newPost);
+    } else {
+      console.log("creating post without card image");
+      const newPost = new PostModel({
+        caption: caption,
+        description: description,
+        productionYear: productionYear,
+        engineCode: engineCode,
+        carModel: carModel,
+      });
+      const result = await newPost.save();
+      res.status(200).json(result);
+    }
   } catch (err) {
     console.log(err);
   }

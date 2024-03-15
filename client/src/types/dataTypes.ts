@@ -6,8 +6,10 @@ export declare type FetchedData = {
   password: string;
   _id: string;
   productionYear: string;
-  engine: string;
-  avatar: string;
+  engineCode: string;
+  cardImage: string;
+  carModel: string;
+  caption: string;
   comments: Comment[];
 };
 

@@ -1,21 +1,40 @@
+import { Dispatch } from "react";
 import Form from "react-bootstrap/Form";
 
-function SelectProductionYear() {
+declare type SelectOptionType = {
+  setYear: Dispatch<string>;
+  setEngine: Dispatch<string>;
+  setModel: Dispatch<string>;
+};
+
+function SelectOptions({ setYear, setEngine, setModel }: SelectOptionType) {
   return (
     <>
-      <Form.Select aria-label="Variant">
-        <option>Select model</option>
+      {/* <button onClick={() => setModel("clicked")}>Click me</button> */}
+
+      <Form.Select
+        aria-label="Variant"
+        onChange={(e) => setModel(e.target.value)}
+        defaultValue="unknown"
+      >
+        <option>Choose car model</option>
         <option value="Coupe">Coupe</option>
         <option value="Cabrio">Cabrio</option>
         <option value="Sedan">Sedan</option>
         <option value="Compact">Compact</option>
         <option value="Combi">Combi</option>
       </Form.Select>
-      <Form.Select aria-label="Year">
-        <option>Select production year</option>
+
+      <Form.Select
+        aria-label="Year"
+        onChange={(e) => setYear(e.target.value)}
+        defaultValue="unknown"
+      >
+        <option>Choose production year</option>
         <option value="1990">1990</option>
         <option value="1991">1991</option>
         <option value="1992">1992</option>
+        <option value="1993">1993</option>
         <option value="1994">1994</option>
         <option value="1995">1995</option>
         <option value="1996">1996</option>
@@ -24,8 +43,12 @@ function SelectProductionYear() {
         <option value="1999">1999</option>
         <option value="2000">2000</option>
       </Form.Select>
-      <Form.Select aria-label="Code">
-        <option>Select engine type</option>
+      <Form.Select
+        aria-label="Code"
+        onChange={(e) => setEngine(e.target.value)}
+        defaultValue="unknown"
+      >
+        <option>Choose engine code</option>
         <option value="M43B16">M43B16</option>
         <option value="M44B19">M44B19</option>
         <option value="M42B18">M42B18</option>
@@ -40,4 +63,4 @@ function SelectProductionYear() {
   );
 }
 
-export default SelectProductionYear;
+export default SelectOptions;

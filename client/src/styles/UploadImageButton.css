@@ -1,0 +1,14 @@
+.upload-image-button {
+  background-color: grey;
+  width: 30%;
+  font-size: 2rem;
+  color: white;
+  font-family: sans-serif;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: -3rem;
+}
+
+.negative-margin {
+  margin: -20spx;
+}
