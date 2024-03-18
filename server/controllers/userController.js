@@ -1,5 +1,6 @@
+import { generateToken } from "../middleware/jwt.js";
 import { UserModel } from "../models/userModel.js";
-import { imageUpload } from "../utils/uploadImage.js";
+import { hashPassword, verifyPassword } from "../utils/bcrypt.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -31,7 +32,6 @@ export const addUser = async (req, res) => {
     return res.status(400).json({ error: "Please fill out all fields" });
   }
 
-  // const userExist = await UserModel.findOne({ $or: [{ email }, { username }] });
   const emailExist = await UserModel.findOne({ email });
   const usernameExist = await UserModel.findOne({ username });
   if (emailExist) {
@@ -44,33 +44,62 @@ export const addUser = async (req, res) => {
       .json({ message: "User with this username already exists." });
   } else {
     try {
-      console.log("req.file", req.file);
-      const attachedFile = req.file !== undefined;
+      // console.log("req.file", req.file);
+      // const attachedFile = req.file !== undefined;
 
-      if (attachedFile) {
-        console.log("file attached");
-        const uploadedImage = await imageUpload(req.file, "avatar");
-        const { secure_url, public_id } = uploadedImage;
-        const newUser = new UserModel({
-          email: email,
-          username: username,
-          password: password,
-          avatar: secure_url,
-        });
-        const result = await newUser.save();
-        res.status(200).json(result);
-      } else {
-        console.log("creating user without avatar");
-        const newUser = new UserModel({
-          email: email,
-          username: username,
-          password: password,
-        });
-        const result = await newUser.save();
-        res.status(200).json(result);
-      }
+      // if (attachedFile) {
+      //   console.log("file attached");
+      //   const uploadedImage = await imageUpload(req.file, "avatar");
+      //   const { secure_url, public_id } = uploadedImage;
+      //   const newUser = new UserModel({
+      //     email: email,
+      //     username: username,
+      //     password: password,
+      //     avatar: secure_url,
+      //   });
+      //   const result = await newUser.save();
+      //   res.status(200).json(result);
+      // } else {
+      //console.log("creating user without avatar");
+
+      const hashedPassword = await hashPassword(password); //FROM bcrypt.js
+      const newUser = new UserModel({
+        email: email,
+        username: username,
+        password: hashedPassword,
+      });
+      const result = await newUser.save();
+      res.status(200).json(result);
+      //}
     } catch (e) {
       console.log(e);
     }
+  }
+};
+
+export const logInUser = async (req, res) => {
+  console.log("loggin in user");
+  const { email, password } = req.body;
+
+  try {
+    const user = await UserModel.findOne({ email: email });
+
+    if (user) {
+      const { password: hashedPassword } = user;
+      const verified = verifyPassword(password, hashedPassword);
+      if (verified) {
+        const token = generateToken(user);
+        if (token) {
+          console.log("user verified");
+          res.status(201).json({ message: "User logged in", token: token });
+        } else {
+          console.log("Failed to generate token");
+        }
+      } else {
+        console.log("failed verification");
+      }
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Wrong password", error: error.message });
   }
 };

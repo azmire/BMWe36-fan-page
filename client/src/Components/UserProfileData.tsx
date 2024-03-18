@@ -33,8 +33,8 @@ function UserProfileData() {
             </Col>
           </Row>
           <Button className="add-cover-photo">
-            <MdAddAPhoto size={30} />{" "}
-            <div className="ps-4">Change cover image</div>
+            <MdAddAPhoto size={30} />
+            <div className="ps-2">Change image</div>
           </Button>
         </div>
 
@@ -52,7 +52,7 @@ function UserProfileData() {
                 variant="secondary"
                 className="add-image-button rounded-circle"
               >
-                <MdAddAPhoto size={80} />
+                <MdAddAPhoto size={40} />
               </Button>
               <div className="d-flex justify-content-center">
                 <h2>{data.username}</h2>
