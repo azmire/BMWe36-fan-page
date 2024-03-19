@@ -16,18 +16,19 @@ export const addPost = async (req, res) => {
     req.body;
 
   try {
-    const attachedFile = req.file != undefined;
-
+    const attachedFile = req.files != undefined;
+    console.log("REUEST:>> ", req.files);
     if (attachedFile) {
       console.log("creating post with card image");
-      const uploadedImage = await imageUpload(req.file, "cardImage");
-      const { secure_url, public_id } = uploadedImage;
+      const uploadedImagesArray = await imageUpload(req.files, "cardImage");
+      console.log("uploadedImagesArray :>> ", uploadedImagesArray);
+
       const post = new PostModel({
         caption: caption,
         description: description,
         productionYear: productionYear,
         engineCode: engineCode,
-        cardImage: secure_url,
+        cardImage: uploadedImagesArray,
         carModel: carModel,
       });
       const newPost = await post.save();

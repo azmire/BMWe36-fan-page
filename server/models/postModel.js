@@ -5,7 +5,7 @@ const postSchema = new mongoose.Schema({
   description: String,
   productionYear: String,
   engineCode: String,
-  cardImage: String,
+  cardImage: [String],
   carModel: String,
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
 });

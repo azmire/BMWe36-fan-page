@@ -1,4 +1,4 @@
-import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
+import { Card, Carousel, Col, Container, Row, Spinner } from "react-bootstrap";
 import "../styles/ProfilePage.css";
 import useFetch from "../hooks/useFetch";
 import UserProfileData from "../Components/UserProfileData";
@@ -25,6 +25,16 @@ function Profile() {
             <Col className="col-xl-6">
               <Card>
                 <Card.Img variant="top" src={data.cardImage} />
+                {/* <Carousel fade>
+                  {data.cardImage.map((image: string) => {
+                    return (
+                      <Carousel.Item interval={9999999}>
+                        <Card.Img src={image} />
+                        <Carousel.Caption></Carousel.Caption>
+                      </Carousel.Item> 
+                    ); 
+                  })}
+                </Carousel> */}
                 <Card.Body>
                   <Card.Title>Card Title</Card.Title>
                   <Card.Text>{data.description}</Card.Text>

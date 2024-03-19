@@ -1,4 +1,12 @@
-import { Button, Card, Col, Container, Row, Spinner } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Carousel,
+  Col,
+  Container,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import useFetch from "../hooks/useFetch";
 import { BiComment } from "react-icons/bi";
 import LikeButton from "../Components/LikeButton";
@@ -7,7 +15,7 @@ import DislikeButton from "../Components/DislikeButton";
 function Posts() {
   const url = "http://localhost:9876/api/posts/allposts"; //fetching all posts from db
   const { data, loading } = useFetch(url);
-
+  console.log("data :>> ", data);
   if (loading) {
     return (
       <div className="d-flex justify-content-center ">
@@ -25,7 +33,17 @@ function Posts() {
               <Row>
                 <Col className="d-flex justify-content-center">
                   <Card className="w-50 align-items-center ">
-                    <Card.Img variant="top" src={post.cardImage} />
+                    <Carousel fade key={data._id}>
+                      {post.cardImage.map((image) => {
+                        return (
+                          <Carousel.Item interval={9999999}>
+                            <Card.Img src={image} />
+                            <Carousel.Caption></Carousel.Caption>
+                          </Carousel.Item>
+                        );
+                      })}
+                    </Carousel>
+
                     <Card.Body className="pb-1 w-100">
                       <Card.Title>{post.caption}</Card.Title>
                       <Card.Text>{post.description}</Card.Text>

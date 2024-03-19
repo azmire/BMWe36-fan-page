@@ -10,6 +10,6 @@ const postRouter = express.Router();
 
 postRouter.get("/allposts", getPosts);
 postRouter.get("/:id", getPostById);
-postRouter.post("/addpost", multerUpload.single("cardImage"), addPost);
+postRouter.post("/addpost", multerUpload.any("cardImage"), addPost);
 
 export default postRouter;

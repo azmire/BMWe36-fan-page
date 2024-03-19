@@ -7,10 +7,15 @@ export declare type FetchedData = {
   _id: string;
   productionYear: string;
   engineCode: string;
-  cardImage: string;
+  cardImage: Images[];
   carModel: string;
   caption: string;
   comments: Comment[];
+};
+
+export declare type Images = {
+  _id: string;
+  src: string;
 };
 
 export declare type Comment = {

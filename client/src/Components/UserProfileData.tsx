@@ -15,9 +15,10 @@ import { UserData } from "../types/dataTypes";
 import { MdAddAPhoto } from "react-icons/md";
 
 function UserProfileData() {
-  const url = "http://localhost:9876/api/users/65f2e332045e9b76e9b17003";
+  const url = "http://localhost:9876/api/users/65f81019fe3d46f713caffce"; //logged in user profile data
   let { data } = useFetch(url) as unknown as UserData;
-  console.log("data :>> ", data);
+  console.log("loged in user data :>> ", data);
+
   return (
     <div>
       {/* user profile header image container */}

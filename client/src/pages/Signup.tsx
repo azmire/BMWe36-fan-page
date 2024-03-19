@@ -5,12 +5,15 @@ function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
   //const [image, setImage] = useState<File | undefined>(undefined);
 
   // const handleImageUpload = (e) => {
   //   setImage(e.target.files[0]);
   // };
-
+  if (password !== repeatPassword) {
+    console.log("Password doesn't match repeated password");
+  }
   const handleRegister = () => {
     const formdata = new FormData();
     formdata.append("email", email);
@@ -31,6 +34,7 @@ function Signup() {
       .then((result) => console.log(result))
       .catch((error) => console.error(error));
   };
+
   return (
     <>
       <Container
@@ -91,8 +95,8 @@ function Signup() {
               type="text"
               id="repeatPassword"
               placeholder="Repeat Password"
-              /* value={repeatPassword}
-              onChange={handleRepeatPasswordChange} */
+              value={repeatPassword}
+              onChange={(e) => setRepeatPassword(e.target.value)}
             />
           </Form.Group>
           {/* <input type="file" name="image" onChange={handleImageUpload} /> */}

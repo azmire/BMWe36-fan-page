@@ -10,23 +10,25 @@ type User = {
 };
 
 function Login() {
-  /*  const [users, setUsers] = useState<User[] | null>(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const requestOptions = {
-        method: "GET",
-        redirect: "follow",
-      };
+  const handleLogIn = () => {
+    const formdata = new FormData();
+    formdata.append("email", email);
+    formdata.append("password", password);
 
-      fetch("http://localhost:9876/api/users/allusers", requestOptions)
-        .then((response) => response.json())
-        .then((result) => setUsers(result))
-        .catch((error) => console.error(error));
+    const requestOptions = {
+      method: "POST",
+      body: formdata,
+      redirect: "follow" as RequestRedirect,
     };
-    fetchData();
-  }, []);
-  console.log("users :>> ", users); */
+
+    fetch("http://localhost:9876/api/users/login", requestOptions)
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
+  };
   return (
     <>
       <Card
@@ -41,21 +43,21 @@ function Login() {
             <Form.Label>Email address</Form.Label>
             <Form.Control
               className="bg-light"
-              type="email"
+              type="text"
               placeholder="Enter email"
-              /* value={email}
-              onChange={handleEmailChange} */
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Password</Form.Label>
             <Form.Control
               className="bg-light"
-              type="password"
+              type="text"
               placeholder="Password"
               id="password"
-              /* value={password}
-              onChange={handlePasswordChange} */
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
 
@@ -63,6 +65,7 @@ function Login() {
             className="d-grid col-12 mx-auto mt-4"
             variant="dark"
             type="submit"
+            onClick={handleLogIn}
           >
             Log in
           </Button>

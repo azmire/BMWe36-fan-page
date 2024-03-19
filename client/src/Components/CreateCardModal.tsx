@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Card, Col, Container, Form, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
@@ -11,48 +11,57 @@ declare type ModalProps = {
 
 function ModalComponent({ placeholder }: ModalProps) {
   const [show, setShow] = useState(false);
-  const [image, setImage] = useState<File | undefined>(undefined);
+  const [images, setImages] = useState<Array<File> | undefined>(undefined);
+  // const [image, setImage] = useState<Array<File> | undefined>([]);
   const [description, setDescription] = useState("");
   const [caption, setCaption] = useState("");
   const [year, setYear] = useState<string | null>("");
   const [engine, setEngine] = useState<string | null>("");
   const [model, setModel] = useState<string | null>("");
+  const [message, setMessage] = useState("");
+  console.log("images :>> ", images);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const handleImageUpload = (e) => {
-    setImage(e.target.files[0]);
+    setImages(e.target.files);
   };
+  // console.log("message :>> ", message);
 
+  // if (images == undefined) {
+  //   setMessage("No image selected.");
+  // } else {
   const handleCreateCard = () => {
-    const formdata = new FormData();
-    if (image && model && year && engine && caption) {
-      formdata.append("cardImage", image);
+    if (images && model && year && engine && caption) {
+      const formdata = new FormData();
+      for (let i = 0; i < images.length; i++) {
+        formdata.append(`cardImage${i + 1}`, images[i]);
+      }
+      setMessage("Uploading images");
       formdata.append("description", description);
       formdata.append("caption", caption);
       formdata.append("carModel", model);
       formdata.append("productionYear", year);
       formdata.append("engineCode", engine);
+
+      //posting data to a user collection
+      const requestOptions = {
+        method: "POST",
+        body: formdata,
+        redirect: "follow" as RequestRedirect,
+      };
+
+      fetch("http://localhost:9876/api/posts/addpost", requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
-    //posting data to a user collection
-    const requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow" as RequestRedirect,
-    };
-
-    fetch("http://localhost:9876/api/posts/addpost", requestOptions)
-      .then((response) => response.json())
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
   };
-
-  useEffect(() => {
-    console.log("model :>> ", model);
-    console.log("year :>> ", year);
-    console.log("engine :>> ", engine);
-  }, [model, year, engine]);
 
   return (
     <>
@@ -77,9 +86,10 @@ function ModalComponent({ placeholder }: ModalProps) {
                   <Card.Img variant="top" src={placeholder}></Card.Img>
                   <input
                     type="file"
+                    multiple
                     id="actual-button"
                     name="image"
-                    onChange={handleImageUpload}
+                    onChange={handleImageUpload} //image upload function
                     className="pb-3"
                   />
                   {/* <Button
