@@ -30,4 +30,5 @@ export declare type Data = {
   imagePlaceholder: string;
   createdAt: string;
   username: string;
+  _id: string;
 };

@@ -6,6 +6,7 @@ import UserProfileData from "../Components/UserProfileData";
 function Profile() {
   const url = "http://localhost:9876/api/posts/65f45124d9f9cdc131d14583"; //fetching post for test only
   const { data, loading } = useFetch(url);
+  console.log("user data :>> ", data);
 
   if (loading) {
     return (
@@ -24,17 +25,18 @@ function Profile() {
           <Row className="d-flex justify-content-center">
             <Col className="col-xl-6">
               <Card>
-                <Card.Img variant="top" src={data.cardImage} />
-                {/* <Carousel fade>
-                  {data.cardImage.map((image: string) => {
-                    return (
-                      <Carousel.Item interval={9999999}>
-                        <Card.Img src={image} />
-                        <Carousel.Caption></Carousel.Caption>
-                      </Carousel.Item> 
-                    ); 
-                  })}
-                </Carousel> */}
+                {/* <Card.Img variant="top" src={data.cardImage} /> */}
+                <Carousel fade>
+                  {data.cardImage &&
+                    data.cardImage.map((image: string) => {
+                      return (
+                        <Carousel.Item key={image} interval={9999999}>
+                          <Card.Img src={image} />
+                          <Carousel.Caption></Carousel.Caption>
+                        </Carousel.Item>
+                      );
+                    })}
+                </Carousel>
                 <Card.Body>
                   <Card.Title>Card Title</Card.Title>
                   <Card.Text>{data.description}</Card.Text>

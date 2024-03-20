@@ -1,21 +1,18 @@
-import {
-  Button,
-  Card,
-  Carousel,
-  Col,
-  Container,
-  Row,
-  Spinner,
-} from "react-bootstrap";
+import { Card, Carousel, Col, Container, Row, Spinner } from "react-bootstrap";
 import useFetch from "../hooks/useFetch";
-import { BiComment } from "react-icons/bi";
 import LikeButton from "../Components/LikeButton";
 import DislikeButton from "../Components/DislikeButton";
+import CommentButton from "../Components/CommentButton";
+import CommentSection from "../Components/CommentSection";
+import { useState } from "react";
 
 function Posts() {
   const url = "http://localhost:9876/api/posts/allposts"; //fetching all posts from db
   const { data, loading } = useFetch(url);
   console.log("data :>> ", data);
+
+  const [value, setValue] = useState("d-none");
+
   if (loading) {
     return (
       <div className="d-flex justify-content-center ">
@@ -29,15 +26,15 @@ function Posts() {
         data.map((post) => {
           console.log("post :>> ", post);
           return (
-            <Container className="py-3" key={post._id}>
+            <Container key={post._id} className="py-3">
               <Row>
                 <Col className="d-flex justify-content-center">
                   <Card className="w-50 align-items-center ">
-                    <Carousel fade key={data._id}>
+                    <Carousel fade>
                       {post.cardImage.map((image) => {
                         return (
                           <Carousel.Item interval={9999999}>
-                            <Card.Img src={image} />
+                            <Card.Img src={image as unknown as string} />
                             <Carousel.Caption></Carousel.Caption>
                           </Carousel.Item>
                         );
@@ -59,13 +56,13 @@ function Posts() {
                       <div className="d-flex justify-content-around">
                         <LikeButton />
                         <DislikeButton />
-                        <Button
-                          className="text-secondary text-decoration-none align-middle"
-                          variant="link"
-                        >
-                          <BiComment />
-                          Comment
-                        </Button>
+                        <CommentButton setValue={setValue} />
+                      </div>
+                      <div>
+                        <CommentSection
+                          toggleShow={value}
+                          comments={post.comments}
+                        />
                       </div>
                     </Card.Body>
                   </Card>
