@@ -5,12 +5,16 @@ export declare type FetchedData = {
   username: string;
   password: string;
   _id: string;
+  like: string;
+  dislike: number;
   productionYear: string;
   engineCode: string;
   cardImage: Images[];
   carModel: string;
   caption: string;
   comments: Comment[];
+  likeButtonDisabled: boolean;
+  dislikeButtonDisabled: boolean;
 };
 
 export declare type Images = {

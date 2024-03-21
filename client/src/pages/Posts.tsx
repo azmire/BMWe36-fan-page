@@ -20,6 +20,7 @@ function Posts() {
       </div>
     );
   }
+
   return (
     <>
       {data &&
@@ -53,9 +54,18 @@ function Posts() {
                       <Card.Text className="border-bottom mb-1">
                         <b>Engine Type:</b> {post.engineCode}
                       </Card.Text>
+                      <div className="d-flex justify-content-around border-bottom">
+                        <Card.Text>Likes: {post.like}</Card.Text>
+                        <Card.Text>Dislikes: {post.dislike}</Card.Text>
+                        <Card.Text>Comments:</Card.Text>
+                      </div>
                       <div className="d-flex justify-content-around">
-                        <LikeButton />
-                        <DislikeButton />
+                        <LikeButton
+                          likeButtonDisabled={post.likeButtonDisabled}
+                        />
+                        <DislikeButton
+                          dislikeButtonDisabled={post.dislikeButtonDisabled}
+                        />
                         <CommentButton setValue={setValue} />
                       </div>
                       <div>

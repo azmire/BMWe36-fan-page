@@ -66,3 +66,26 @@ export const getPostById = async (req, res) => {
     res.status(500).json({ message: "Error fetching post", err: err.message });
   }
 };
+
+export const updatePost = async (req, res) => {
+  try {
+    const update = {
+      like: req.body.like,
+      dislike: req.body.dislike,
+      likeButtonDisabled: req.body.likeButtonDisabled,
+      dislikeButtonDisabled: req.body.dislikeButtonDisabled,
+    };
+
+    const id = { _id: req.params.id };
+    console.log("id :>> ", id);
+
+    const post = await PostModel.findOneAndUpdate(id, update, {
+      new: true,
+      upsert: true,
+    });
+    const newPost = await post.save();
+    res.status(200).json(newPost);
+  } catch (err) {
+    console.log(err);
+  }
+};
