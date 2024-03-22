@@ -13,29 +13,56 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogIn = () => {
-    const formdata = new FormData();
-    formdata.append("email", email);
-    formdata.append("password", password);
+  const handleLogIn = async (event: React.FormEvent<HTMLFormElement>) => {
+    console.log("runs");
+    event.preventDefault();
+    console.log("runs?");
+    if (!email || !password) {
+      alert("Email or password is missing");
+      return;
+    } else {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-    const requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow" as RequestRedirect,
-    };
+      const urlencoded = new URLSearchParams();
+      urlencoded.append("email", email);
+      urlencoded.append("password", password);
 
-    fetch("http://localhost:9876/api/users/login", requestOptions)
-      .then((response) => response.json())
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow" as RequestRedirect,
+      };
+      try {
+        console.log("fetching?");
+        const response = await fetch(
+          "http://localhost:9876/api/users/login",
+          requestOptions
+        );
+        console.log(response);
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log("result :>> ", result);
+        }
+        if (!response.ok) {
+          const result = await response.json();
+          console.log("result :>> ", result);
+        }
+      } catch (error) {
+        console.log("error :>> ", error);
+      }
+    }
   };
+
   return (
     <>
       <Card
         className="h-100 shadow mx-auto p-5 mt-4"
         style={{ width: "22rem" }}
       >
-        <Form /* onSubmit={handleSubmit} */>
+        <Form onSubmit={handleLogIn}>
           <div className="d-flex justify-content-center mb-3">
             <h3>Welcome back</h3>
           </div>
@@ -65,7 +92,7 @@ function Login() {
             className="d-grid col-12 mx-auto mt-4"
             variant="dark"
             type="submit"
-            onClick={handleLogIn}
+            // onClick={handleLogIn}
           >
             Log in
           </Button>

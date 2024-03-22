@@ -1,7 +1,6 @@
 import { Card, Carousel, Col, Container, Row, Spinner } from "react-bootstrap";
 import useFetch from "../hooks/useFetch";
 import LikeButton from "../Components/LikeButton";
-import DislikeButton from "../Components/DislikeButton";
 import CommentButton from "../Components/CommentButton";
 import CommentSection from "../Components/CommentSection";
 import { useState } from "react";
@@ -9,9 +8,10 @@ import { useState } from "react";
 function Posts() {
   const url = "http://localhost:9876/api/posts/allposts"; //fetching all posts from db
   const { data, loading } = useFetch(url);
-  console.log("data :>> ", data);
 
-  const [value, setValue] = useState("d-none");
+  //const [display, setDisplay] = useState("d-none"); //sends value to comment section
+  const [display, setDisplay] = useState("d-none");
+  const [clickedPostId, setClickedPostId] = useState<string | null>(""); //which comment button is being clicked
 
   if (loading) {
     return (
@@ -56,22 +56,27 @@ function Posts() {
                       </Card.Text>
                       <div className="d-flex justify-content-around border-bottom">
                         <Card.Text>Likes: {post.like}</Card.Text>
-                        <Card.Text>Dislikes: {post.dislike}</Card.Text>
+
                         <Card.Text>Comments:</Card.Text>
                       </div>
                       <div className="d-flex justify-content-around">
                         <LikeButton
                           likeButtonDisabled={post.likeButtonDisabled}
                         />
-                        <DislikeButton
-                          dislikeButtonDisabled={post.dislikeButtonDisabled}
+
+                        <CommentButton
+                          setDisplay={setDisplay}
+                          id={post._id} //sending value to each post comment button
+                          setClickedPostId={setClickedPostId} //returning value from comment btn clicked
+                          display={display}
                         />
-                        <CommentButton setValue={setValue} />
                       </div>
                       <div>
                         <CommentSection
-                          toggleShow={value}
-                          comments={post.comments}
+                          display={display} //receieving value from comment button
+                          comments={post.comments} //array of fetched comments
+                          clickedPostId={clickedPostId} //receieving clickedPostId from comment btn
+                          id={post._id}
                         />
                       </div>
                     </Card.Body>

@@ -6,7 +6,6 @@ export declare type FetchedData = {
   password: string;
   _id: string;
   like: string;
-  dislike: number;
   productionYear: string;
   engineCode: string;
   cardImage: Images[];
@@ -14,7 +13,6 @@ export declare type FetchedData = {
   caption: string;
   comments: Comment[];
   likeButtonDisabled: boolean;
-  dislikeButtonDisabled: boolean;
 };
 
 export declare type Images = {
@@ -24,6 +22,7 @@ export declare type Images = {
 
 export declare type Comment = {
   comment: string;
+  createdAt: string;
 };
 
 export declare type UserData = {

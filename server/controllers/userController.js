@@ -84,6 +84,10 @@ export const logInUser = async (req, res) => {
 
   try {
     const user = await UserModel.findOne({ email: email });
+    console.log("user :>> ", user);
+    if (!user) {
+      res.status(500).json({ message: "user has no account with this email" });
+    }
 
     if (user) {
       const { password: hashedPassword } = user;
@@ -94,9 +98,12 @@ export const logInUser = async (req, res) => {
           console.log("user verified");
           res.status(201).json({ message: "User logged in", token: token });
         } else {
+          res.status(500).json({ message: "Failed to generate token" });
           console.log("Failed to generate token");
         }
       } else {
+        res.status(500).json({ message: "Failed verification" });
+
         console.log("failed verification");
       }
     }

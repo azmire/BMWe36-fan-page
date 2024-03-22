@@ -71,9 +71,7 @@ export const updatePost = async (req, res) => {
   try {
     const update = {
       like: req.body.like,
-      dislike: req.body.dislike,
       likeButtonDisabled: req.body.likeButtonDisabled,
-      dislikeButtonDisabled: req.body.dislikeButtonDisabled,
     };
 
     const id = { _id: req.params.id };

@@ -8,9 +8,7 @@ const postSchema = new mongoose.Schema({
   cardImage: [String],
   carModel: String,
   like: { type: Number, default: 0 },
-  dislike: { type: Number, default: 0 },
   likeButtonDisabled: { type: Boolean, default: false },
-  dislikeButtonDisabled: { type: Boolean, default: false },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
 });
 
