@@ -34,4 +34,5 @@ export declare type Data = {
   createdAt: string;
   username: string;
   _id: string;
+  cardImage: string;
 };

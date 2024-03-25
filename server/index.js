@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 // loading .env file
 dotenv.config();
 
+import passport from "passport";
 import express from "express";
 import cors from "cors";
 import userRouter from "./routes/userRoutes.js";
@@ -9,6 +10,7 @@ import postRouter from "./routes/postRoutes.js";
 import commentRouter from "./routes/commentRoutes.js";
 import mongoose from "mongoose";
 import { cloudinaryConfig } from "./config/cloudinary.js";
+import { passportConfig } from "./config/passportConfig.js";
 /* import { UserModel } from "./models/userModel.js"; */
 
 const app = express();
@@ -34,6 +36,8 @@ mongoose
     });
   })
   .catch((err) => console.log(err));
+app.use(passport.initialize());
+passportConfig();
 
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);

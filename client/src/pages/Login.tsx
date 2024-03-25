@@ -1,22 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
-
-type User = {
-  _id: string;
-  email: string;
-  username: string;
-  password: string;
-};
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { setUserId, checkForToken, user } = useContext(AuthContext);
+  console.log("user :>> ", user);
 
-  const handleLogIn = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("runs");
-    event.preventDefault();
-    console.log("runs?");
+  const handleLogIn = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (!email || !password) {
       alert("Email or password is missing");
       return;
@@ -35,7 +30,6 @@ function Login() {
         redirect: "follow" as RequestRedirect,
       };
       try {
-        console.log("fetching?");
         const response = await fetch(
           "http://localhost:9876/api/users/login",
           requestOptions
@@ -45,6 +39,14 @@ function Login() {
         if (response.ok) {
           const result = await response.json();
           console.log("result :>> ", result);
+          const { token, id } = result;
+          if (token) {
+            localStorage.setItem("token", token);
+          }
+          if (id) {
+            setUserId(id);
+            console.log("_id :>> ", id);
+          }
         }
         if (!response.ok) {
           const result = await response.json();
@@ -55,6 +57,13 @@ function Login() {
       }
     }
   };
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/posts");
+    }
+  }, [user]);
 
   return (
     <>
@@ -62,7 +71,11 @@ function Login() {
         className="h-100 shadow mx-auto p-5 mt-4"
         style={{ width: "22rem" }}
       >
-        <Form onSubmit={handleLogIn}>
+        <Form
+          onSubmit={(e) => {
+            handleLogIn(e), checkForToken();
+          }}
+        >
           <div className="d-flex justify-content-center mb-3">
             <h3>Welcome back</h3>
           </div>

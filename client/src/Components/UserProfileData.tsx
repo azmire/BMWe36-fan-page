@@ -13,11 +13,17 @@ import ModalComponent from "./CreateCardModal";
 import useFetch from "../hooks/useFetch";
 import { UserData } from "../types/dataTypes";
 import { MdAddAPhoto } from "react-icons/md";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 function UserProfileData() {
-  const url = "http://localhost:9876/api/users/65f81019fe3d46f713caffce"; //logged in user profile data
+  const { userId } = useContext(AuthContext);
+  console.log("userId :>> ", userId);
+
+  const url = `http://localhost:9876/api/users/${userId}`; //logged in user profile data
   let { data } = useFetch(url) as unknown as UserData;
-  console.log("loged in user data :>> ", data);
+  const { logout } = useContext(AuthContext);
+  console.log("data :>> ", data);
 
   return (
     <div>
@@ -72,6 +78,7 @@ function UserProfileData() {
                 </Nav>
               </Container>
             </Navbar>
+            <Button onClick={logout}>LogOut</Button>
           </Row>
         </Container>
       </div>

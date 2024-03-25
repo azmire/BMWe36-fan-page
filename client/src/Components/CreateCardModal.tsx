@@ -11,7 +11,7 @@ declare type ModalProps = {
 
 function ModalComponent({ placeholder }: ModalProps) {
   const [show, setShow] = useState(false);
-  const [images, setImages] = useState<Array<File> | undefined>(undefined);
+  const [images, setImages] = useState<FileList | undefined>(undefined);
   // const [image, setImage] = useState<Array<File> | undefined>([]);
   const [description, setDescription] = useState("");
   const [caption, setCaption] = useState("");
@@ -24,8 +24,8 @@ function ModalComponent({ placeholder }: ModalProps) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const handleImageUpload = (e) => {
-    setImages(e.target.files);
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImages((e.target as any).files);
   };
   // console.log("message :>> ", message);
 

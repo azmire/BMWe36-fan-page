@@ -45,24 +45,6 @@ export const addUser = async (req, res) => {
       .json({ message: "User with this username already exists." });
   } else {
     try {
-      // console.log("req.file", req.file);
-      // const attachedFile = req.file !== undefined;
-
-      // if (attachedFile) {
-      //   console.log("file attached");
-      //   const uploadedImage = await imageUpload(req.file, "avatar");
-      //   const { secure_url, public_id } = uploadedImage;
-      //   const newUser = new UserModel({
-      //     email: email,
-      //     username: username,
-      //     password: password,
-      //     avatar: secure_url,
-      //   });
-      //   const result = await newUser.save();
-      //   res.status(200).json(result);
-      // } else {
-      //console.log("creating user without avatar");
-
       const hashedPassword = await hashPassword(password); //FROM bcrypt.js
       const newUser = new UserModel({
         email: email,
@@ -71,7 +53,6 @@ export const addUser = async (req, res) => {
       });
       const result = await newUser.save();
       res.status(200).json(result);
-      //}
     } catch (e) {
       console.log(e);
     }
@@ -91,20 +72,22 @@ export const logInUser = async (req, res) => {
 
     if (user) {
       const { password: hashedPassword } = user;
-      const verified = verifyPassword(password, hashedPassword);
+      const verified = await verifyPassword(password, hashedPassword);
       if (verified) {
         const token = generateToken(user);
         if (token) {
           console.log("user verified");
-          res.status(201).json({ message: "User logged in", token: token });
+          res
+            .status(201)
+            .json({ message: "User logged in", token: token, id: user._id });
         } else {
           res.status(500).json({ message: "Failed to generate token" });
           console.log("Failed to generate token");
         }
       } else {
-        res.status(500).json({ message: "Failed verification" });
+        res.status(500).json({ message: "Wrong password" });
 
-        console.log("failed verification");
+        console.log("Wrong password");
       }
     }
   } catch (error) {

@@ -8,6 +8,7 @@ import NavbarComponent from "./Components/Navbar.tsx";
 import Posts from "./pages/Posts.tsx";
 import Signup from "./pages/Signup.tsx";
 import Parts from "./pages/Parts.tsx";
+import { AuthProvider } from "./contexts/AuthContext.tsx";
 
 const router = createBrowserRouter([
   {
@@ -48,10 +49,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <RouterProvider router={router} />
-      {/* <FrontPage /> */}
-      {/* <Profile /> */}
-      {/* <Login /> */}
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
     </>
   );
 }
