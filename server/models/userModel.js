@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "src/assets/image-placeholder.jpeg",
     },
+    posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
   },
   { timestamps: true }
 );

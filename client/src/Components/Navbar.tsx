@@ -11,9 +11,13 @@ function NavbarComponent() {
           <Navbar.Brand as={Link} to={"/"}>
             e36
           </Navbar.Brand>
+
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="me-auto">
+          <Navbar.Collapse
+            className="justify-content-between"
+            id="basic-navbar-nav"
+          >
+            <Nav>
               <Nav.Link as={Link} to={"/posts"}>
                 Posts
               </Nav.Link>
@@ -23,6 +27,8 @@ function NavbarComponent() {
               <Nav.Link as={Link} to={"/parts"}>
                 Parts
               </Nav.Link>
+            </Nav>
+            <Nav>
               <Nav.Link as={Link} to={"/login"}>
                 <MdAccountCircle size={30} />
               </Nav.Link>

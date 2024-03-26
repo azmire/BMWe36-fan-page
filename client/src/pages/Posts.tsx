@@ -1,17 +1,23 @@
-import { Card, Carousel, Col, Container, Row, Spinner } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Carousel,
+  Col,
+  Container,
+  Row,
+  Spinner,
+} from "react-bootstrap";
 import useFetch from "../hooks/useFetch";
 import LikeButton from "../Components/LikeButton";
-import CommentButton from "../Components/CommentButton";
 import CommentSection from "../Components/CommentSection";
 import { useState } from "react";
+import PostCardModal from "../Components/PostCardModal";
 
 function Posts() {
   const url = "http://localhost:9876/api/posts/allposts"; //fetching all posts from db
   const { data, loading } = useFetch(url);
 
-  //const [display, setDisplay] = useState("d-none"); //sends value to comment section
-  const [display, setDisplay] = useState("d-none");
-  const [clickedPostId, setClickedPostId] = useState<string | null>(""); //which comment button is being clicked
+  // const [display, setDisplay] = useState("d-none");
 
   if (loading) {
     return (
@@ -26,6 +32,7 @@ function Posts() {
       {data &&
         data.map((post) => {
           console.log("post :>> ", post);
+
           return (
             <Container key={post._id} className="py-3">
               <Row>
@@ -60,24 +67,12 @@ function Posts() {
                         <Card.Text>Comments:</Card.Text>
                       </div>
                       <div className="d-flex justify-content-around">
-                        <LikeButton
-                          likeButtonDisabled={post.likeButtonDisabled}
-                        />
-
-                        <CommentButton
-                          setDisplay={setDisplay}
-                          id={post._id} //sending value to each post comment button
-                          setClickedPostId={setClickedPostId} //returning value from comment btn clicked
-                          display={display}
-                        />
-                      </div>
-                      <div>
-                        <CommentSection
-                          display={display} //receieving value from comment button
-                          comments={post.comments} //array of fetched comments
-                          clickedPostId={clickedPostId} //receieving clickedPostId from comment btn
-                          id={post._id}
-                        />
+                        <div>
+                          <LikeButton //like buton component
+                            likeButtonDisabled={post.likeButtonDisabled}
+                          />
+                        </div>
+                        <PostCardModal props={post} />
                       </div>
                     </Card.Body>
                   </Card>

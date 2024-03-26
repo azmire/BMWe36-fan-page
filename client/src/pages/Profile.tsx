@@ -2,10 +2,11 @@ import { Card, Carousel, Col, Container, Row, Spinner } from "react-bootstrap";
 import "../styles/ProfilePage.css";
 import useFetch from "../hooks/useFetch";
 import UserProfileData from "../Components/UserProfileData";
-import { FetchedData } from "../types/dataTypes";
+import { Data } from "../types/dataTypes";
 
 declare type ProfileTypes = {
-  cardImage: string;
+  description: string;
+  cardImage: string[];
 };
 
 function Profile() {
@@ -31,8 +32,8 @@ function Profile() {
               <Card>
                 {/* <Card.Img variant="top" src={data.cardImage} /> */}
                 <Carousel fade>
-                  {(data as unknown as FetchedData).cardImage &&
-                    (data as unknown as FetchedData).cardImage.map((image) => {
+                  {(data as unknown as ProfileTypes).cardImage &&
+                    (data as unknown as ProfileTypes).cardImage.map((image) => {
                       return (
                         <Carousel.Item interval={9999999}>
                           <Card.Img src={image} />
@@ -43,18 +44,18 @@ function Profile() {
                 </Carousel>
                 <Card.Body>
                   <Card.Title>Card Title</Card.Title>
-                  <Card.Text>{data.description}</Card.Text>
+                  <Card.Text>{(data as unknown as Data).description}</Card.Text>
                   <Card.Text>
                     <b>Car model: </b>
-                    {data.carModel}
+                    {(data as unknown as Data).carModel}
                   </Card.Text>
                   <Card.Text>
                     <b>Production Year: </b>
-                    {data.productionYear}
+                    {(data as unknown as Data).productionYear}
                   </Card.Text>
                   <Card.Text>
                     <b>Engine code: </b>
-                    {data.engineCode}
+                    {(data as unknown as Data).engineCode}
                   </Card.Text>
                 </Card.Body>
               </Card>

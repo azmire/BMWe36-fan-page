@@ -4,7 +4,13 @@ import { imageUpload } from "../utils/uploadImage.js";
 
 export const getPosts = async (req, res) => {
   try {
-    const allPosts = await PostModel.find().populate({ path: "comments" });
+    const allPosts = await PostModel.find()
+      .populate({
+        path: "comments",
+      })
+      .populate({
+        path: "author",
+      });
     res.status(200).json(allPosts);
   } catch (e) {
     console.log(e);

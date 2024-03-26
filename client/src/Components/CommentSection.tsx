@@ -1,24 +1,8 @@
-import { Toast } from "react-bootstrap";
+import { Form, Toast } from "react-bootstrap";
+import { CommentsectionType } from "../types/commentTypes";
+import { Comment } from "../types/dataTypes";
 
-declare type CommentsectionType = {
-  comments: Comment[];
-  clickedPostId: string | null;
-  id: string | null;
-  display: string;
-};
-declare type Comment = {
-  createdAt: string;
-  comment: string;
-};
-
-function CommentSection({
-  display,
-  comments,
-  clickedPostId,
-  id,
-}: CommentsectionType) {
-  console.log("recieved post Id :>> ", id, clickedPostId);
-
+function CommentSection({ display, comments }: CommentsectionType) {
   return (
     <>
       <div className={display}>
@@ -55,7 +39,15 @@ function CommentSection({
               <strong className="me-auto">Write a comment</strong>
               <small>Date</small>
             </Toast.Header>
-            <Toast.Body>Write sth...</Toast.Body>
+            <Form>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlTextarea1"
+              >
+                <Form.Label>Example textarea</Form.Label>
+                <Form.Control as="textarea" rows={3} />
+              </Form.Group>
+            </Form>
           </Toast>
         </div>
       </div>

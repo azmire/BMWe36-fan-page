@@ -46,6 +46,7 @@ function Login() {
           if (id) {
             setUserId(id);
             console.log("_id :>> ", id);
+            navigate("/posts");
           }
         }
         if (!response.ok) {

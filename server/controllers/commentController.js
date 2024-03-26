@@ -2,7 +2,7 @@ import { CommentModel } from "../models/commentModel.js";
 
 export const getComments = async (req, res) => {
   try {
-    const allComments = await CommentModel.find().populate({ path: "users" });
+    const allComments = await CommentModel.find().populate({ path: "author" });
     res.status(200).json(allComments);
   } catch (e) {
     console.log(e);

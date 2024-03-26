@@ -13,11 +13,13 @@ export declare type FetchedData = {
   caption: string;
   comments: Comment[];
   likeButtonDisabled: boolean;
+  data: Data;
 };
 
 export declare type Images = {
   _id: string;
   src: string;
+  image: string;
 };
 
 export declare type Comment = {
@@ -35,4 +37,8 @@ export declare type Data = {
   username: string;
   _id: string;
   cardImage: string;
+  description: string;
+  carModel: string;
+  productionYear: string;
+  engineCode: string;
 };

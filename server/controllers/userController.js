@@ -4,7 +4,9 @@ import { hashPassword, verifyPassword } from "../utils/bcrypt.js";
 
 export const getUsers = async (req, res) => {
   try {
-    const allUsers = await UserModel.find();
+    const allUsers = await UserModel.find().populate({
+      path: "posts",
+    });
     res.status(200).json(allUsers);
   } catch (e) {
     console.log(e);
