@@ -1,4 +1,5 @@
 import { CommentModel } from "../models/commentModel.js";
+import { PostModel } from "../models/postModel.js";
 
 export const getComments = async (req, res) => {
   try {
@@ -10,10 +11,24 @@ export const getComments = async (req, res) => {
 };
 
 export const addComment = async (req, res) => {
+  console.log("req.body :>> ", req.body);
+  const { post, author, comment } = req.body;
+  console.log("post, author, comment  :>> ", post, author, comment);
   try {
     const comment = new CommentModel(req.body);
     const newComment = await comment.save();
-    res.status(200).json(newComment);
+    const { _id } = newComment;
+    const postItem = await PostModel.findOneAndUpdate(
+      { _id: post },
+      {
+        $push: { comments: _id },
+      },
+      { new: true }
+    ).populate({ path: "comments", populate: { path: "author" } });
+
+    console.log("postItem :>> ", postItem);
+
+    res.status(200).json({ postItem });
   } catch (err) {
     console.log(err);
   }

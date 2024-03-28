@@ -3,11 +3,9 @@ import { CommentsectionType } from "../types/commentTypes";
 import { Comment } from "../types/dataTypes";
 import { useState } from "react";
 
-function CommentSection({ display, comments, id }: CommentsectionType) {
+function CommentSection({ display, comments, postId }: CommentsectionType) {
   const [existingComments, setExistingComments] = useState(comments);
   const [newComment, setNewComment] = useState("");
-
-  console.log("comments :>> ", comments);
 
   const userId = localStorage.getItem("userId");
 
@@ -24,7 +22,7 @@ function CommentSection({ display, comments, id }: CommentsectionType) {
       const urlencoded = new URLSearchParams();
       urlencoded.append("comment", newComment);
       urlencoded.append("author", userId);
-      urlencoded.append("post", id);
+      urlencoded.append("post", postId);
 
       const requestOptions = {
         method: "POST",
@@ -40,9 +38,9 @@ function CommentSection({ display, comments, id }: CommentsectionType) {
 
         if (response.ok) {
           const result = await response.json();
+          console.log("result :>> ", result);
           setExistingComments(result.postItem.comments);
           setNewComment("");
-          console.log(result);
         }
         if (!response.ok) {
           const result = await response.json();

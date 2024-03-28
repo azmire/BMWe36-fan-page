@@ -7,8 +7,8 @@ function useFetch(url: string) {
   const [error, setError] = useState<string | null>(null);
 
   const token = localStorage.getItem("token");
-  console.log("token :>> ", token);
-  console.log("data :>> ", data);
+  // console.log("token :>> ", token);
+  // console.log("data :>> ", data);
 
   const GetData = async () => {
     setLoading(true);

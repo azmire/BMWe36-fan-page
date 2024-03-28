@@ -6,7 +6,7 @@ import { AuthContext } from "../contexts/AuthContext";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { setUserId, checkForToken, user } = useContext(AuthContext);
+  const { checkForId, checkForToken, user } = useContext(AuthContext);
   console.log("user :>> ", user);
 
   const handleLogIn = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -44,7 +44,7 @@ function Login() {
             localStorage.setItem("token", token);
           }
           if (id) {
-            setUserId(id);
+            localStorage.setItem("userId", id);
             console.log("_id :>> ", id);
             navigate("/posts");
           }
@@ -74,7 +74,7 @@ function Login() {
       >
         <Form
           onSubmit={(e) => {
-            handleLogIn(e), checkForToken();
+            handleLogIn(e), checkForToken(), checkForId();
           }}
         >
           <div className="d-flex justify-content-center mb-3">

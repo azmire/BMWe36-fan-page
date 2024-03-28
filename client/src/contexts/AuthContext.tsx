@@ -15,7 +15,7 @@ declare type AuthContextType = {
   //login: () => void;
   logout: () => void;
   checkForToken: () => void;
-  setUserId: (userId: string) => void;
+  checkForId: () => void;
 };
 
 const defaultValue: AuthContextType = {
@@ -29,7 +29,7 @@ const defaultValue: AuthContextType = {
     throw new Error("There is no user");
   },
   checkForToken: () => {},
-  setUserId: () => {},
+  checkForId: () => {},
 };
 
 export const AuthContext = createContext<AuthContextType>(defaultValue);
@@ -41,9 +41,13 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   console.log("token:", token);
   console.log("user :>> ", user);
 
-  const setUserId = (userId: string) => {
-    setId(userId);
-    console.log("userId :>> ", userId);
+  const checkForId = () => {
+    const userId = localStorage.getItem("userId");
+    if (userId) {
+      setId(userId);
+
+      console.log("userId :>> ", userId);
+    }
   };
 
   const checkForToken = () => {
@@ -72,7 +76,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       value={{
         logout,
         checkForToken,
-        setUserId,
+        checkForId,
         userId,
         token,
         user,

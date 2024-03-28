@@ -14,6 +14,7 @@ export declare type FetchedData = {
   comments: Comment[];
   likeButtonDisabled: boolean;
   data: Data;
+  author: Author;
 };
 
 export declare type Images = {
@@ -21,10 +22,19 @@ export declare type Images = {
   src: string;
   image: string;
 };
-
 export declare type Comment = {
   comment: string;
   createdAt: string;
+};
+export declare type Author = {
+  avatar: string;
+  createdAt: string;
+  updatedAt: string;
+  email: string;
+  imagePlaceholder: string;
+  password: string;
+  username: string;
+  posts: FetchedData;
 };
 
 export declare type UserData = {

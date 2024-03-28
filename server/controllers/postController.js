@@ -1,16 +1,17 @@
-import { model } from "mongoose";
 import { PostModel } from "../models/postModel.js";
-import { imageUpload } from "../utils/uploadImage.js";
+import { imagesUpload } from "../utils/uploadImage.js";
 
 export const getPosts = async (req, res) => {
   try {
     const allPosts = await PostModel.find()
       .populate({
-        path: "comments",
+        path: "author",
       })
       .populate({
-        path: "author",
+        path: "comments",
+        populate: { path: "author" },
       });
+
     res.status(200).json(allPosts);
   } catch (e) {
     console.log(e);
@@ -18,7 +19,7 @@ export const getPosts = async (req, res) => {
 };
 
 export const addPost = async (req, res) => {
-  const { description, productionYear, engineCode, carModel, caption } =
+  const { description, productionYear, engineCode, carModel, caption, author } =
     req.body;
 
   try {
@@ -26,7 +27,7 @@ export const addPost = async (req, res) => {
     console.log("REUEST:>> ", req.files);
     if (attachedFile) {
       console.log("creating post with card image");
-      const uploadedImagesArray = await imageUpload(req.files, "cardImage");
+      const uploadedImagesArray = await imagesUpload(req.files, "cardImage");
       console.log("uploadedImagesArray :>> ", uploadedImagesArray);
 
       const post = new PostModel({
@@ -36,6 +37,7 @@ export const addPost = async (req, res) => {
         engineCode: engineCode,
         cardImage: uploadedImagesArray,
         carModel: carModel,
+        author: author,
       });
       const newPost = await post.save();
       res.status(200).json(newPost);
@@ -47,6 +49,7 @@ export const addPost = async (req, res) => {
         productionYear: productionYear,
         engineCode: engineCode,
         carModel: carModel,
+        author: author,
       });
       const result = await newPost.save();
       res.status(200).json(result);

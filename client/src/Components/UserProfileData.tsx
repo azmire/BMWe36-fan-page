@@ -13,18 +13,48 @@ import ModalComponent from "./CreateCardModal";
 import useFetch from "../hooks/useFetch";
 import { UserData } from "../types/dataTypes";
 import { MdAddAPhoto } from "react-icons/md";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 
 function UserProfileData() {
-  const { userId } = useContext(AuthContext);
-  console.log("userId :>> ", userId);
+  const userId = localStorage.getItem("userId");
+  const token = localStorage.getItem("token");
+  const [profileImage, setProfileImage] = useState("");
 
-  const url = `http://localhost:9876/api/users/${userId}`; //logged in user profile data
+  //FETCH LOGGED IN USER DATA
+  const url = `http://localhost:9876/api/users/${userId}`;
   let { data } = useFetch(url) as unknown as UserData;
   const { logout } = useContext(AuthContext);
-  console.log("data :>> ", data);
 
+  //UPDATE USER PROFILE DATA
+  console.log("profileImage :>> ", profileImage);
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setProfileImage((e.target as any).files[0]);
+  };
+  const uploadImage = () => {
+    console.log("uploading image");
+    const myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer${token}`);
+
+    const formdata = new FormData();
+    formdata.append("avatar", profileImage);
+
+    const requestOptions = {
+      method: "PATCH",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow" as RequestRedirect,
+    };
+    console.log("fetching");
+    fetch(
+      "http://localhost:9876/api/users/660577d4b233ffaf0c2f4ad2",
+      requestOptions
+    )
+      .then((response) => response.json())
+      .then((result) => console.log(result))
+      .catch((error) => console.error(error));
+    console.log("success");
+  };
   return (
     <div>
       {/* user profile header image container */}
@@ -39,9 +69,9 @@ function UserProfileData() {
               />
             </Col>
           </Row>
-          <Button className="add-cover-photo">
+          <Button className="text-wrap badge add-cover-photo">
             <MdAddAPhoto size={30} />
-            <div className="ps-2">Change image</div>
+            <div className=" ps-2">Change image</div>
           </Button>
         </div>
 
@@ -56,11 +86,17 @@ function UserProfileData() {
                 roundedCircle
               />
               <Button
+                className="add-image-button badge rounded-circle"
                 variant="secondary"
-                className="add-image-button rounded-circle"
+                onClick={uploadImage}
               >
                 <MdAddAPhoto size={40} />
               </Button>
+              <input
+                className=""
+                type="file"
+                onChange={handleImageUpload}
+              ></input>
               <div className="d-flex justify-content-center">
                 <h2>{data.username}</h2>
               </div>

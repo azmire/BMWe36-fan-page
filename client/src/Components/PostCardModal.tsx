@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { Key, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { BiComment } from "react-icons/bi";
 import { FetchedData } from "../types/dataTypes";
-import { Card, Carousel, Col, Container, Row } from "react-bootstrap";
+import { Card, Carousel, Col, Container, Image, Row } from "react-bootstrap";
 import LikeButton from "./LikeButton";
 import CommentSection from "./CommentSection";
 
@@ -32,7 +32,15 @@ function PostCardModal({ props }: PostCardModalTypes) {
 
       <Modal className="modal-lg" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <div></div>
+          <div>
+            <Image
+              //user image rounded
+              style={{ height: "3vh", width: "3vh", border: "5px" }}
+              src={props.author.avatar}
+              roundedCircle
+            />
+            <b>{props.author.username}</b>
+          </div>
         </Modal.Header>
 
         <Container key={props._id} className="py-3">
@@ -42,7 +50,10 @@ function PostCardModal({ props }: PostCardModalTypes) {
                 <Carousel fade>
                   {props.cardImage.map((image) => {
                     return (
-                      <Carousel.Item interval={9999999}>
+                      <Carousel.Item
+                        key={image as unknown as Key}
+                        interval={9999999}
+                      >
                         <Card.Img src={image as unknown as string} />
                         <Carousel.Caption></Carousel.Caption>
                       </Carousel.Item>
@@ -89,6 +100,7 @@ function PostCardModal({ props }: PostCardModalTypes) {
                   <CommentSection
                     display={display} //receieving value from comment button
                     comments={props.comments} //array of fetched comments
+                    postId={props._id}
                   />
                 </Card.Body>
               </Card>

@@ -1,6 +1,7 @@
 import { generateToken } from "../middleware/jwt.js";
 import { UserModel } from "../models/userModel.js";
 import { hashPassword, verifyPassword } from "../utils/bcrypt.js";
+import { imageUpload } from "../utils/uploadImage.js";
 
 export const getUsers = async (req, res) => {
   try {
@@ -94,5 +95,33 @@ export const logInUser = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: "Wrong password", error: error.message });
+  }
+};
+
+export const updateUser = async (req, res) => {
+  try {
+    const attachedFile = req.file != undefined;
+
+    if (attachedFile) {
+      console.log("Updating image");
+      const id = { _id: req.params.id };
+      console.log("id :>> ", id);
+
+      const updateImage = await imageUpload(req.file, "avatar");
+      console.log("updateImage :>> ", updateImage);
+      const update = { avatar: updateImage.secure_url };
+
+      const user = await UserModel.findByIdAndUpdate(id, update, {
+        new: true,
+        upsert: true,
+      });
+
+      const updatedUser = await user.save();
+      res.status(200).json(updatedUser);
+    } else {
+      console.log("No image chosen");
+    }
+  } catch (err) {
+    console.log(err);
   }
 };

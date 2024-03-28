@@ -19,6 +19,7 @@ function ModalComponent({ placeholder }: ModalProps) {
   const [engine, setEngine] = useState<string | null>("");
   const [model, setModel] = useState<string | null>("");
   const [message, setMessage] = useState("");
+  const id = localStorage.getItem("userId");
   console.log("images :>> ", images);
 
   const handleClose = () => setShow(false);
@@ -33,7 +34,7 @@ function ModalComponent({ placeholder }: ModalProps) {
   //   setMessage("No image selected.");
   // } else {
   const handleCreateCard = () => {
-    if (images && model && year && engine && caption) {
+    if (images && model && year && engine && caption && id) {
       const formdata = new FormData();
       for (let i = 0; i < images.length; i++) {
         formdata.append(`cardImage${i + 1}`, images[i]);
@@ -44,6 +45,7 @@ function ModalComponent({ placeholder }: ModalProps) {
       formdata.append("carModel", model);
       formdata.append("productionYear", year);
       formdata.append("engineCode", engine);
+      formdata.append("author", id);
 
       //posting data to a user collection
       const requestOptions = {
@@ -66,7 +68,7 @@ function ModalComponent({ placeholder }: ModalProps) {
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
-        Add
+        Add new post
       </Button>
 
       <Modal
@@ -92,14 +94,7 @@ function ModalComponent({ placeholder }: ModalProps) {
                     onChange={handleImageUpload} //image upload function
                     className="pb-3"
                   />
-                  {/* <Button
-                    variant="secondary"
-                    className="w-50 d-flex align-items-start justify-content-start"
-                  >
-                    <label htmlFor="actual-btn">
-                      <MdAddAPhoto />
-                    </label>
-                  </Button> */}
+
                   <Form>
                     <Form.Group
                       className="mb-3"
