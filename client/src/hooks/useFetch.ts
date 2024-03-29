@@ -6,19 +6,20 @@ function useFetch(url: string) {
   const [data, setData] = useState<FetchedData[] | []>([]);
   const [error, setError] = useState<string | null>(null);
 
-  const token = localStorage.getItem("token");
+  //const token = localStorage.getItem("token");
   // console.log("token :>> ", token);
   // console.log("data :>> ", data);
 
   const GetData = async () => {
     setLoading(true);
 
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-    myHeaders.append("Authorization", `Bearer ${token}`);
+    //const myHeaders = new Headers();
+    //myHeaders.append("Authorization", `Bearer ${token}`);
+    //const urlencoded = new URLSearchParams();
     const requestOptions = {
       method: "GET",
-      headers: myHeaders,
+      //headers: myHeaders,
+      //body: urlencoded,
       redirect: "follow" as RequestRedirect,
     };
     try {

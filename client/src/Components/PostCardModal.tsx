@@ -78,6 +78,7 @@ function PostCardModal({ props }: PostCardModalTypes) {
 
                     <Card.Text>Comments:</Card.Text>
                   </div>
+
                   <div className="d-flex justify-content-around">
                     <div>
                       <LikeButton //like buton component

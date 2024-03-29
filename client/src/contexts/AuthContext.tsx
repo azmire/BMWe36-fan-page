@@ -1,4 +1,10 @@
-import { PropsWithChildren, createContext, useState } from "react";
+import {
+  Dispatch,
+  PropsWithChildren,
+  SetStateAction,
+  createContext,
+  useState,
+} from "react";
 
 // type User = {
 //   _id: string;
@@ -12,7 +18,7 @@ declare type AuthContextType = {
   token: string;
   userId: string;
 
-  //login: () => void;
+  setUser: Dispatch<SetStateAction<boolean>>;
   logout: () => void;
   checkForToken: () => void;
   checkForId: () => void;
@@ -30,6 +36,7 @@ const defaultValue: AuthContextType = {
   },
   checkForToken: () => {},
   checkForId: () => {},
+  setUser: () => {},
 };
 
 export const AuthContext = createContext<AuthContextType>(defaultValue);
@@ -38,15 +45,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState(false);
   const [userId, setId] = useState("");
   const [token, setToken] = useState("");
-  console.log("token:", token);
   console.log("user :>> ", user);
 
   const checkForId = () => {
     const userId = localStorage.getItem("userId");
     if (userId) {
       setId(userId);
-
-      console.log("userId :>> ", userId);
     }
   };
 
@@ -74,6 +78,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   return (
     <AuthContext.Provider
       value={{
+        setUser,
         logout,
         checkForToken,
         checkForId,

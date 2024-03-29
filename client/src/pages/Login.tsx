@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
@@ -6,8 +6,8 @@ import { AuthContext } from "../contexts/AuthContext";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { checkForId, checkForToken, user } = useContext(AuthContext);
-  console.log("user :>> ", user);
+  const { checkForId, checkForToken, setUser, user, logout } =
+    useContext(AuthContext);
 
   const handleLogIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,11 +34,11 @@ function Login() {
           "http://localhost:9876/api/users/login",
           requestOptions
         );
-        console.log(response);
 
         if (response.ok) {
           const result = await response.json();
           console.log("result :>> ", result);
+          setUser(true);
           const { token, id } = result;
           if (token) {
             localStorage.setItem("token", token);
@@ -49,6 +49,7 @@ function Login() {
             navigate("/posts");
           }
         }
+
         if (!response.ok) {
           const result = await response.json();
           console.log("result :>> ", result);
@@ -59,12 +60,6 @@ function Login() {
     }
   };
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user) {
-      navigate("/posts");
-    }
-  }, [user]);
 
   return (
     <>

@@ -9,6 +9,7 @@ import Posts from "./pages/Posts.tsx";
 import Signup from "./pages/Signup.tsx";
 import Parts from "./pages/Parts.tsx";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
+import ProtectedRoute from "./Components/ProtectedRoute.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +21,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/profile",
-        element: <Profile />,
+        element: (
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/posts",

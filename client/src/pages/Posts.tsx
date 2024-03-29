@@ -11,11 +11,12 @@ import useFetch from "../hooks/useFetch";
 import LikeButton from "../Components/LikeButton";
 import { Key } from "react";
 import PostCardModal from "../Components/PostCardModal";
+import ProtectedRoute from "../Components/ProtectedRoute";
 
 function Posts() {
   const url = "http://localhost:9876/api/posts/allposts"; //fetching all posts from db
   const { data, loading } = useFetch(url);
-  console.log("data :>> ", data);
+
   if (loading) {
     return (
       <div className="d-flex justify-content-center ">
@@ -70,19 +71,23 @@ function Posts() {
                       <Card.Text className="border-bottom mb-1">
                         <b>Engine Type:</b> {post.engineCode}
                       </Card.Text>
-                      <div className="d-flex justify-content-around border-bottom">
-                        <Card.Text>Likes: {post.like}</Card.Text>
+                      <div className="d-flex justify-content-around border-bottom  ">
+                        <Card.Text className="mb-1">
+                          Likes: {post.like}
+                        </Card.Text>
 
                         <Card.Text>Comments:</Card.Text>
                       </div>
-                      <div className="d-flex justify-content-around">
-                        <div>
-                          <LikeButton //like buton component
-                            likeButtonDisabled={post.likeButtonDisabled}
-                          />
+                      <ProtectedRoute>
+                        <div className="d-flex justify-content-around">
+                          <div>
+                            <LikeButton //like buton component
+                              likeButtonDisabled={post.likeButtonDisabled}
+                            />
+                          </div>
+                          <PostCardModal props={post} />
                         </div>
-                        <PostCardModal props={post} />
-                      </div>
+                      </ProtectedRoute>
                     </Card.Body>
                   </Card>
                 </Col>

@@ -6,6 +6,7 @@ import { useState } from "react";
 function CommentSection({ display, comments, postId }: CommentsectionType) {
   const [existingComments, setExistingComments] = useState(comments);
   const [newComment, setNewComment] = useState("");
+  const token = localStorage.getItem("token");
 
   const userId = localStorage.getItem("userId");
 
@@ -17,7 +18,7 @@ function CommentSection({ display, comments, postId }: CommentsectionType) {
       return;
     } else {
       const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+      myHeaders.append("Authorization", `Bearer${token}`);
 
       const urlencoded = new URLSearchParams();
       urlencoded.append("comment", newComment);

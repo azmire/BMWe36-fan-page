@@ -1,4 +1,5 @@
 import { PostModel } from "../models/postModel.js";
+import { UserModel } from "../models/userModel.js";
 import { imagesUpload } from "../utils/uploadImage.js";
 
 export const getPosts = async (req, res) => {
@@ -29,7 +30,7 @@ export const addPost = async (req, res) => {
       console.log("creating post with card image");
       const uploadedImagesArray = await imagesUpload(req.files, "cardImage");
       console.log("uploadedImagesArray :>> ", uploadedImagesArray);
-
+      //find author and push post id to author posts array
       const post = new PostModel({
         caption: caption,
         description: description,
@@ -41,6 +42,16 @@ export const addPost = async (req, res) => {
       });
       const newPost = await post.save();
       res.status(200).json(newPost);
+
+      const { _id } = newPost;
+      const postAuthor = await UserModel.findOneAndUpdate(
+        { _id: author },
+        {
+          $push: { posts: _id },
+        },
+        { new: true }
+      ).populate({ path: "posts" });
+      res.status(200).json(postItem);
     } else {
       console.log("creating post without card image");
       const newPost = new PostModel({

@@ -13,47 +13,55 @@ import ModalComponent from "./CreateCardModal";
 import useFetch from "../hooks/useFetch";
 import { UserData } from "../types/dataTypes";
 import { MdAddAPhoto } from "react-icons/md";
-import { useContext, useState } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import { useState } from "react";
 
 function UserProfileData() {
   const userId = localStorage.getItem("userId");
   const token = localStorage.getItem("token");
   const [profileImage, setProfileImage] = useState("");
+  console.log(profileImage);
 
   //FETCH LOGGED IN USER DATA
   const url = `http://localhost:9876/api/users/${userId}`;
   let { data } = useFetch(url) as unknown as UserData;
-  const { logout } = useContext(AuthContext);
 
   //UPDATE USER PROFILE DATA
-  console.log("profileImage :>> ", profileImage);
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const imageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setProfileImage((e.target as any).files[0]);
+    if (profileImage) {
+      handleImageUpload();
+    } else {
+      console.log("No image selected");
+    }
   };
-  const uploadImage = () => {
-    console.log("uploading image");
+
+  const handleImageUpload = async () => {
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer${token}`);
+    try {
+      const formdata = new FormData();
+      formdata.append("avatar", profileImage);
 
-    const formdata = new FormData();
-    formdata.append("avatar", profileImage);
+      const requestOptions = {
+        method: "PATCH",
+        headers: myHeaders,
+        body: formdata,
+        redirect: "follow" as RequestRedirect,
+      };
 
-    const requestOptions = {
-      method: "PATCH",
-      headers: myHeaders,
-      body: formdata,
-      redirect: "follow" as RequestRedirect,
-    };
-    console.log("fetching");
-    fetch(
-      "http://localhost:9876/api/users/660577d4b233ffaf0c2f4ad2",
-      requestOptions
-    )
-      .then((response) => response.json())
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
-    console.log("success");
+      const response = await fetch(
+        "http://localhost:9876/api/users/660577d4b233ffaf0c2f4ad2",
+        requestOptions
+      );
+      if (response.ok) {
+        const result = await response.json();
+        console.log("result :>> ", result);
+      }
+    } catch (err) {
+      const error = err as Error;
+
+      console.log(error.message);
+    }
   };
   return (
     <div>
@@ -85,18 +93,22 @@ function UserProfileData() {
                 src={data.avatar}
                 roundedCircle
               />
-              <Button
+              {/* <Button
                 className="add-image-button badge rounded-circle"
                 variant="secondary"
-                onClick={uploadImage}
+                //onChange={(e) => uploadImage(e)}
               >
                 <MdAddAPhoto size={40} />
-              </Button>
+              </Button> */}
               <input
                 className=""
                 type="file"
-                onChange={handleImageUpload}
+                onChange={(e) => {
+                  imageUpload(e);
+                  //   handleImageUpload;
+                }}
               ></input>
+
               <div className="d-flex justify-content-center">
                 <h2>{data.username}</h2>
               </div>
@@ -114,7 +126,6 @@ function UserProfileData() {
                 </Nav>
               </Container>
             </Navbar>
-            <Button onClick={logout}>LogOut</Button>
           </Row>
         </Container>
       </div>

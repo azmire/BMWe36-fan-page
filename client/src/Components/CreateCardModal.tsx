@@ -20,7 +20,6 @@ function ModalComponent({ placeholder }: ModalProps) {
   const [model, setModel] = useState<string | null>("");
   const [message, setMessage] = useState("");
   const id = localStorage.getItem("userId");
-  console.log("images :>> ", images);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
