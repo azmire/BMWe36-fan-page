@@ -1,6 +1,5 @@
 import FrontPage from "./pages/FrontPage.tsx";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Profile from "./pages/Profile.tsx";
 import Login from "./pages/Login.tsx";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import ErrorPage from "./pages/ErrorPage.tsx";
@@ -10,6 +9,8 @@ import Signup from "./pages/Signup.tsx";
 import Parts from "./pages/Parts.tsx";
 import { AuthProvider } from "./contexts/AuthContext.tsx";
 import ProtectedRoute from "./Components/ProtectedRoute.tsx";
+import OtherUsersProfileProfilePage from "./pages/OtherUsersProfilePage.tsx";
+import MyProfile from "./pages/MyProfile.tsx";
 
 const router = createBrowserRouter([
   {
@@ -20,12 +21,16 @@ const router = createBrowserRouter([
         element: <FrontPage />,
       },
       {
-        path: "/profile",
+        path: "/myProfile/:id",
         element: (
           <ProtectedRoute>
-            <Profile />
+            <MyProfile />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "/otherUserProfile/:id",
+        element: <OtherUsersProfileProfilePage />,
       },
       {
         path: "/posts",

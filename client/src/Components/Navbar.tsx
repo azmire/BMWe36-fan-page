@@ -7,6 +7,7 @@ import { AuthContext } from "../contexts/AuthContext";
 
 function NavbarComponent() {
   const { user, logout } = useContext(AuthContext);
+  const userId = localStorage.getItem("userId");
   let link = "";
   let navIcon = <MdAccountCircle title="Login" size={30} />;
   if (!user) {
@@ -32,8 +33,8 @@ function NavbarComponent() {
               <Nav.Link as={Link} to={"/posts"}>
                 Posts
               </Nav.Link>
-              <Nav.Link as={Link} to={"/profile"}>
-                Profile
+              <Nav.Link as={Link} to={`/myProfile/${userId}`}>
+                MyProfile
               </Nav.Link>
               <Nav.Link as={Link} to={"/parts"}>
                 Parts

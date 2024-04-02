@@ -1,8 +1,9 @@
 import { Card, Carousel, Col, Container, Row, Spinner } from "react-bootstrap";
 import "../styles/ProfilePage.css";
-import useFetch from "../hooks/useFetch";
 import UserProfileData from "../Components/UserProfileData";
 import { Data } from "../types/dataTypes";
+import { useParams } from "react-router-dom";
+import useFetch from "../hooks/useFetch";
 
 declare type ProfileTypes = {
   posts: ProfileData[];
@@ -20,11 +21,14 @@ declare type ProfileData = {
   engineCode: string;
 };
 
-function Profile() {
-  const userId = localStorage.getItem("userId");
-  const url = `http://localhost:9876/api/users/${userId}`; //fetching post for test only
+function MyProfile() {
+  const params = useParams();
+  const id = params.id;
+
+  const url = `http://localhost:9876/api/users/${id}`;
+
+  console.log("url :>> ", url);
   const { data, loading } = useFetch(url);
-  console.log("data user loged in:>> ", data);
 
   if (loading) {
     return (
@@ -89,4 +93,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default MyProfile;

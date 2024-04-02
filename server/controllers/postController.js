@@ -51,7 +51,7 @@ export const addPost = async (req, res) => {
         },
         { new: true }
       ).populate({ path: "posts" });
-      res.status(200).json(postItem);
+      res.status(200).json(postAuthor);
     } else {
       console.log("creating post without card image");
       const newPost = new PostModel({
@@ -88,22 +88,55 @@ export const getPostById = async (req, res) => {
 };
 
 export const updatePost = async (req, res) => {
+  const liked = await PostModel.findById({ _id: req.params.id });
+  console.log("liked :>> ", liked.liked);
+
   try {
-    const update = {
-      like: req.body.like,
-      likeButtonDisabled: req.body.likeButtonDisabled,
-    };
+    if (liked.liked == false) {
+      console.log("adding id to array");
 
-    const id = { _id: req.params.id };
-    console.log("id :>> ", id);
+      const post = await PostModel.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          $push: { usersWhoLiked: req.body.author },
+          liked: req.body.liked,
+        },
+        {
+          new: true,
+          upsert: true,
+        }
+      ).populate({
+        path: "author",
+      });
+      res.status(200).json(post);
+    } else if (liked.liked == true) {
+      console.log("removing id from array");
 
-    const post = await PostModel.findOneAndUpdate(id, update, {
-      new: true,
-      upsert: true,
-    });
-    const newPost = await post.save();
-    res.status(200).json(newPost);
+      const post = await PostModel.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          $pull: { usersWhoLiked: req.body.author },
+          liked: req.body.liked,
+        },
+        {
+          new: true,
+          upsert: true,
+        }
+      );
+      res.status(200).json(post);
+    }
   } catch (err) {
     console.log(err);
   }
 };
+
+//   const id = { _id: req.params.id };
+//   console.log("updated post id :>> ", id);
+
+//   const post = await PostModel.findOneAndUpdate(id, update, {
+//     new: true,
+//     upsert: true,
+//   });
+// } catch (err) {
+//   console.log(err);
+// }

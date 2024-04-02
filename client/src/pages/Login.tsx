@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
@@ -6,8 +6,7 @@ import { AuthContext } from "../contexts/AuthContext";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { checkForId, checkForToken, setUser, user, logout } =
-    useContext(AuthContext);
+  const { checkForId, checkForToken } = useContext(AuthContext);
 
   const handleLogIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -38,10 +37,12 @@ function Login() {
         if (response.ok) {
           const result = await response.json();
           console.log("result :>> ", result);
-          setUser(true);
+
           const { token, id } = result;
           if (token) {
             localStorage.setItem("token", token);
+            //setUser(true);
+            checkForToken();
           }
           if (id) {
             localStorage.setItem("userId", id);
@@ -69,7 +70,7 @@ function Login() {
       >
         <Form
           onSubmit={(e) => {
-            handleLogIn(e), checkForToken(), checkForId();
+            handleLogIn(e), checkForId();
           }}
         >
           <div className="d-flex justify-content-center mb-3">

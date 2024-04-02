@@ -13,29 +13,45 @@ import ModalComponent from "./CreateCardModal";
 import useFetch from "../hooks/useFetch";
 import { UserData } from "../types/dataTypes";
 import { MdAddAPhoto } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 function UserProfileData() {
-  const userId = localStorage.getItem("userId");
+  const params = useParams();
+  const { id } = params;
+  console.log("params :>> ", params);
   const token = localStorage.getItem("token");
-  const [profileImage, setProfileImage] = useState("");
-  console.log(profileImage);
+  const [profileImage, setProfileImage] = useState<File | undefined>();
+  const [preview, setPreview] = useState<ArrayBuffer | string | null>(null);
+  console.log("preview", preview);
 
   //FETCH LOGGED IN USER DATA
-  const url = `http://localhost:9876/api/users/${userId}`;
+  const url = `http://localhost:9876/api/users/${id}`;
   let { data } = useFetch(url) as unknown as UserData;
 
-  //UPDATE USER PROFILE DATA
-  const imageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProfileImage((e.target as any).files[0]);
-    if (profileImage) {
-      handleImageUpload();
-    } else {
-      console.log("No image selected");
-    }
-  };
+  console.log("data :>> ", data);
 
-  const handleImageUpload = async () => {
+  //UPDATE USER PROFILE DATA
+  // const imageUpload = async () => {
+  //   setProfileImage((e.target as any).files[0]);
+  //   if (profileImage) {
+  //     handleImageUpload();
+  //   } else {
+  //     console.log("No image selected");
+  //   }
+  // };
+
+  const handleImageUpload = async (e: React.FormEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement & { files: FileList };
+    setProfileImage(target.files[0]);
+
+    const file = new FileReader();
+
+    file.onload = function () {
+      setPreview(file.result);
+    };
+    file.readAsDataURL(target.files[0]);
+
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer${token}`);
     try {
@@ -50,12 +66,13 @@ function UserProfileData() {
       };
 
       const response = await fetch(
-        "http://localhost:9876/api/users/660577d4b233ffaf0c2f4ad2",
+        `http://localhost:9876/api/users/update/${id}`,
         requestOptions
       );
       if (response.ok) {
         const result = await response.json();
         console.log("result :>> ", result);
+        setProfileImage("");
       }
     } catch (err) {
       const error = err as Error;
@@ -90,24 +107,24 @@ function UserProfileData() {
               <Image
                 className="profile-image " //user image rounded
                 style={{ height: "35vh", width: "35vh" }}
-                src={data.avatar}
+                src={preview ? preview : data.avatar}
                 roundedCircle
               />
-              {/* <Button
-                className="add-image-button badge rounded-circle"
-                variant="secondary"
-                //onChange={(e) => uploadImage(e)}
-              >
-                <MdAddAPhoto size={40} />
-              </Button> */}
-              <input
-                className=""
-                type="file"
-                onChange={(e) => {
-                  imageUpload(e);
-                  //   handleImageUpload;
-                }}
-              ></input>
+              <form>
+                {/* <Button
+                  className="add-image-button badge rounded-circle"
+                  variant="secondary"
+                  // onSubmit={(e) => uploadImage(e)}
+                >
+                  <MdAddAPhoto size={40} />
+                </Button> */}
+                <input
+                  className=""
+                  type="file"
+                  name="image"
+                  onChange={handleImageUpload}
+                ></input>
+              </form>
 
               <div className="d-flex justify-content-center">
                 <h2>{data.username}</h2>

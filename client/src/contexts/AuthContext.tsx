@@ -1,10 +1,4 @@
-import {
-  Dispatch,
-  PropsWithChildren,
-  SetStateAction,
-  createContext,
-  useState,
-} from "react";
+import { PropsWithChildren, createContext, useEffect, useState } from "react";
 
 // type User = {
 //   _id: string;
@@ -18,7 +12,7 @@ declare type AuthContextType = {
   token: string;
   userId: string;
 
-  setUser: Dispatch<SetStateAction<boolean>>;
+  //setUser: Dispatch<SetStateAction<boolean>>;
   logout: () => void;
   checkForToken: () => void;
   checkForId: () => void;
@@ -36,7 +30,7 @@ const defaultValue: AuthContextType = {
   },
   checkForToken: () => {},
   checkForId: () => {},
-  setUser: () => {},
+  //setUser: () => {},
 };
 
 export const AuthContext = createContext<AuthContextType>(defaultValue);
@@ -56,10 +50,11 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
   const checkForToken = () => {
     const token = localStorage.getItem("token");
+
     if (token) {
-      setUser(true);
       console.log("token found, setting token");
       setToken(token);
+      setUser(true);
     }
     return token;
   };
@@ -69,16 +64,19 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     if (token) {
       console.log("token found, removing token from ls");
       localStorage.removeItem("token");
+      localStorage.removeItem("userId");
       setUser(false);
     } else {
       console.log("can not logout user if not logged in");
     }
   };
+  useEffect(() => {
+    checkForToken();
+  }, []);
 
   return (
     <AuthContext.Provider
       value={{
-        setUser,
         logout,
         checkForToken,
         checkForId,

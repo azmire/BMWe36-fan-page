@@ -5,6 +5,6 @@ import jwtAuth from "../middleware/jwtAuth.js";
 const commentRouter = express.Router();
 
 commentRouter.get("/allcomments", jwtAuth, getComments);
-commentRouter.post("/addcomment", jwtAuth, addComment);
+commentRouter.post("/addcomment", addComment);
 
 export default commentRouter;

@@ -7,9 +7,9 @@ const postSchema = new mongoose.Schema({
   engineCode: String,
   cardImage: [String],
   carModel: String,
-  like: { type: Number, default: 0 },
+  usersWhoLiked: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
   author: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
-  likeButtonDisabled: { type: Boolean, default: false },
+  liked: { type: Boolean, default: false },
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
 });
 

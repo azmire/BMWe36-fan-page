@@ -11,7 +11,6 @@ export const getComments = async (req, res) => {
 };
 
 export const addComment = async (req, res) => {
-  console.log("req.body :>> ", req.body);
   const { post, author, comment } = req.body;
   console.log("post, author, comment  :>> ", post, author, comment);
   try {

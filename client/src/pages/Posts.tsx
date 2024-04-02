@@ -4,18 +4,48 @@ import {
   Col,
   Container,
   Image,
+  Nav,
   Row,
   Spinner,
 } from "react-bootstrap";
-import useFetch from "../hooks/useFetch";
 import LikeButton from "../Components/LikeButton";
-import { Key } from "react";
+import { Key, useEffect, useState } from "react";
 import PostCardModal from "../Components/PostCardModal";
 import ProtectedRoute from "../Components/ProtectedRoute";
+import { FetchedData } from "../types/dataTypes";
+import { Link } from "react-router-dom";
 
 function Posts() {
   const url = "http://localhost:9876/api/posts/allposts"; //fetching all posts from db
-  const { data, loading } = useFetch(url);
+  //const [numOfLikes, setNumOfLikes] = useState(null);
+  const [numOfUsersWhoLiked, setUsersWhoLiked] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<FetchedData[] | []>([]);
+  const userId = localStorage.getItem("userId");
+
+  const getData = async () => {
+    setLoading(true);
+
+    const requestOptions = {
+      method: "GET",
+      redirect: "follow" as RequestRedirect,
+    };
+    try {
+      const response = await fetch(url, requestOptions);
+      if (response.ok) {
+        const result = (await response.json()) as FetchedData[];
+        setData(result);
+      }
+    } catch (err) {
+      const error = err as Error;
+      console.log(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
 
   if (loading) {
     return (
@@ -30,13 +60,20 @@ function Posts() {
       {data &&
         data.map((post) => {
           console.log("post :>> ", post);
-
           return (
             <Container key={post._id} className="py-3">
               <Row>
                 <Col className="d-flex justify-content-center">
                   <Card className="w-50 align-items-center ">
-                    <div className="ms-3 me-auto p-2 border-bottom">
+                    <Nav.Link
+                      as={Link}
+                      to={
+                        post.author._id == userId
+                          ? `/myProfile/${userId}`
+                          : `/otherUserProfile/${post.author._id}`
+                      }
+                      className="ms-3 me-auto p-2 border-bottom"
+                    >
                       <Image
                         //user image rounded
                         style={{ height: "3vh", width: "3vh", border: "5px" }}
@@ -44,7 +81,7 @@ function Posts() {
                         roundedCircle
                       />
                       <b>{post.author.username}</b>
-                    </div>
+                    </Nav.Link>
                     <Carousel fade>
                       {post.cardImage.map((image) => {
                         return (
@@ -73,16 +110,22 @@ function Posts() {
                       </Card.Text>
                       <div className="d-flex justify-content-around border-bottom  ">
                         <Card.Text className="mb-1">
-                          Likes: {post.like}
+                          {/* Likes (
+                          {post.usersWhoLiked.map((user) => {
+                            return user;
+                          })}
+                          ) */}
                         </Card.Text>
 
-                        <Card.Text>Comments:</Card.Text>
+                        <Card.Text>Comments ({post.comments.length})</Card.Text>
                       </div>
                       <ProtectedRoute>
                         <div className="d-flex justify-content-around">
                           <div>
                             <LikeButton //like buton component
-                              likeButtonDisabled={post.likeButtonDisabled}
+                              liked={post.liked}
+                              postId={post._id}
+                              setUsersWhoLiked={setUsersWhoLiked}
                             />
                           </div>
                           <PostCardModal props={post} />

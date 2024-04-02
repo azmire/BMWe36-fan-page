@@ -1,17 +1,18 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import Login from "../pages/Login";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 declare type ProtectedRouteProps = {
   children: React.ReactNode;
 };
 
 function ProtectedRoute({ children }: ProtectedRouteProps) {
+  const { id } = useParams();
   const { user } = useContext(AuthContext);
   let location = useLocation();
   if (!user) {
-    if (location.pathname == "/profile") {
+    if (location.pathname == `/myProfile/${id}`) {
       return (
         <>
           <div className="d-flex justify-content-center">
