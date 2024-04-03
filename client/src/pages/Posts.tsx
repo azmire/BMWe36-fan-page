@@ -10,15 +10,12 @@ import {
 } from "react-bootstrap";
 import LikeButton from "../Components/LikeButton";
 import { Key, useEffect, useState } from "react";
-import PostCardModal from "../Components/PostCardModal";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import { FetchedData } from "../types/dataTypes";
 import { Link } from "react-router-dom";
 
 function Posts() {
   const url = "http://localhost:9876/api/posts/allposts"; //fetching all posts from db
-  //const [numOfLikes, setNumOfLikes] = useState(null);
-  const [numOfUsersWhoLiked, setUsersWhoLiked] = useState(null);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<FetchedData[] | []>([]);
   const userId = localStorage.getItem("userId");
@@ -58,7 +55,7 @@ function Posts() {
   return (
     <>
       {data &&
-        data.map((post) => {
+        data.map((post, i) => {
           console.log("post :>> ", post);
           return (
             <Container key={post._id} className="py-3">
@@ -108,27 +105,15 @@ function Posts() {
                       <Card.Text className="border-bottom mb-1">
                         <b>Engine Type:</b> {post.engineCode}
                       </Card.Text>
-                      <div className="d-flex justify-content-around border-bottom  ">
-                        <Card.Text className="mb-1">
-                          {/* Likes (
-                          {post.usersWhoLiked.map((user) => {
-                            return user;
-                          })}
-                          ) */}
-                        </Card.Text>
-
-                        <Card.Text>Comments ({post.comments.length})</Card.Text>
-                      </div>
                       <ProtectedRoute>
-                        <div className="d-flex justify-content-around">
-                          <div>
-                            <LikeButton //like buton component
-                              liked={post.liked}
-                              postId={post._id}
-                              setUsersWhoLiked={setUsersWhoLiked}
-                            />
-                          </div>
-                          <PostCardModal props={post} />
+                        <div>
+                          <LikeButton //like button component
+                            liked={post.liked}
+                            postId={post._id}
+                            numOfComments={post.comments.length}
+                            usersWhoLiked={post.usersWhoLiked}
+                            props={post}
+                          />
                         </div>
                       </ProtectedRoute>
                     </Card.Body>

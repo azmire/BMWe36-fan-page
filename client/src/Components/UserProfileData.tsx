@@ -32,16 +32,7 @@ function UserProfileData() {
   console.log("data :>> ", data);
 
   //UPDATE USER PROFILE DATA
-  // const imageUpload = async () => {
-  //   setProfileImage((e.target as any).files[0]);
-  //   if (profileImage) {
-  //     handleImageUpload();
-  //   } else {
-  //     console.log("No image selected");
-  //   }
-  // };
-
-  const handleImageUpload = async (e: React.FormEvent<HTMLInputElement>) => {
+  const imagePreview = async (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement & { files: FileList };
     setProfileImage(target.files[0]);
 
@@ -51,7 +42,9 @@ function UserProfileData() {
       setPreview(file.result);
     };
     file.readAsDataURL(target.files[0]);
+  };
 
+  const handleImageUpload = async () => {
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer${token}`);
     try {
@@ -72,7 +65,7 @@ function UserProfileData() {
       if (response.ok) {
         const result = await response.json();
         console.log("result :>> ", result);
-        setProfileImage("");
+        //setProfileImage("");
       }
     } catch (err) {
       const error = err as Error;
@@ -111,18 +104,18 @@ function UserProfileData() {
                 roundedCircle
               />
               <form>
-                {/* <Button
+                <Button
                   className="add-image-button badge rounded-circle"
                   variant="secondary"
-                  // onSubmit={(e) => uploadImage(e)}
+                  onClick={handleImageUpload}
                 >
                   <MdAddAPhoto size={40} />
-                </Button> */}
+                </Button>
                 <input
                   className=""
                   type="file"
                   name="image"
-                  onChange={handleImageUpload}
+                  onChange={imagePreview}
                 ></input>
               </form>
 

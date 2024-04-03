@@ -80,9 +80,8 @@ function PostCardModal({ props }: PostCardModalTypes) {
 
                   <div className="d-flex justify-content-around">
                     <div>
-                      <LikeButton //like buton component
-                        likeButtonDisabled={props.likeButtonDisabled}
-                      />
+                      {/* <LikeButton //like buton component
+                      /> */}
                     </div>
                     <Button
                       className="text-secondary text-decoration-none align-middle"

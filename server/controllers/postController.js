@@ -11,6 +11,9 @@ export const getPosts = async (req, res) => {
       .populate({
         path: "comments",
         populate: { path: "author" },
+      })
+      .populate({
+        path: "usersWhoLiked",
       });
 
     res.status(200).json(allPosts);
@@ -88,55 +91,100 @@ export const getPostById = async (req, res) => {
 };
 
 export const updatePost = async (req, res) => {
-  const liked = await PostModel.findById({ _id: req.params.id });
-  console.log("liked :>> ", liked.liked);
+  const { author } = req.body;
+  const post = await PostModel.findById({ _id: req.params.id });
 
-  try {
-    if (liked.liked == false) {
-      console.log("adding id to array");
+  const isLiked = post.usersWhoLiked.includes(author);
 
-      const post = await PostModel.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          $push: { usersWhoLiked: req.body.author },
-          liked: req.body.liked,
-        },
-        {
-          new: true,
-          upsert: true,
-        }
-      ).populate({
+  // const action = isLiked
+  //   ? post.usersWhoLiked.pull({ _id: req.params.id })
+  //   : post.usersWhoLiked.push({ _id: req.params.id });
+
+  if (!isLiked) {
+    console.log("you pressed like");
+    console.log("adding id to db");
+
+    const newPost = await PostModel.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $push: { usersWhoLiked: req.body.author },
+      },
+      {
+        new: true,
+        upsert: true,
+      }
+    )
+      .populate({
         path: "author",
+      })
+      .populate({
+        path: "usersWhoLiked",
       });
-      res.status(200).json(post);
-    } else if (liked.liked == true) {
-      console.log("removing id from array");
+    res.status(200).json(newPost);
+  }
 
-      const post = await PostModel.findOneAndUpdate(
-        { _id: req.params.id },
-        {
-          $pull: { usersWhoLiked: req.body.author },
-          liked: req.body.liked,
-        },
-        {
-          new: true,
-          upsert: true,
-        }
-      );
-      res.status(200).json(post);
-    }
-  } catch (err) {
-    console.log(err);
+  if (isLiked) {
+    console.log("you pressed dislike");
+    console.log("removing id from db");
+    const newPost = await PostModel.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $pull: { usersWhoLiked: req.body.author },
+      },
+      {
+        new: true,
+        upsert: true,
+      }
+    )
+      .populate({
+        path: "author",
+      })
+      .populate({
+        path: "usersWhoLiked",
+      });
+    res.status(200).json(newPost);
   }
 };
 
-//   const id = { _id: req.params.id };
-//   console.log("updated post id :>> ", id);
+// export const updatePost = async (req, res) => {
+//   const liked = await PostModel.findById({ _id: req.params.id });
+//   console.log("liked :>> ", liked.liked);
 
-//   const post = await PostModel.findOneAndUpdate(id, update, {
-//     new: true,
-//     upsert: true,
-//   });
-// } catch (err) {
-//   console.log(err);
-// }
+//   try {
+//     if (liked.liked == false) {
+//       console.log("adding id to array");
+
+//       const post = await PostModel.findOneAndUpdate(
+//         { _id: req.params.id },
+//         {
+//           $push: { usersWhoLiked: req.body.author },
+//           liked: req.body.liked,
+//         },
+//         {
+//           new: true,
+//           upsert: true,
+//         }
+//       ).populate({
+//         path: "author",
+//       });
+//       res.status(200).json(post);
+//     } else if (liked.liked == true) {
+//       console.log("removing id from array");
+
+//       const post = await PostModel.findOneAndUpdate(
+//         { _id: req.params.id },
+//         {
+//           $pull: { usersWhoLiked: req.body.author },
+//           liked: req.body.liked,
+//         },
+//         {
+//           new: true,
+//           upsert: true,
+//         }
+//       );
+//       res.status(200).json(post);
+//     }
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
