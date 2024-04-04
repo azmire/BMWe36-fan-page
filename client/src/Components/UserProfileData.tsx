@@ -13,13 +13,13 @@ import ModalComponent from "./CreateCardModal";
 import useFetch from "../hooks/useFetch";
 import { UserData } from "../types/dataTypes";
 import { MdAddAPhoto } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { GiConfirmed } from "react-icons/gi";
 
 function UserProfileData() {
   const params = useParams();
   const { id } = params;
-  console.log("params :>> ", params);
   const token = localStorage.getItem("token");
   const [profileImage, setProfileImage] = useState<File | undefined>();
   const [preview, setPreview] = useState<ArrayBuffer | string | null>(null);
@@ -29,9 +29,8 @@ function UserProfileData() {
   const url = `http://localhost:9876/api/users/${id}`;
   let { data } = useFetch(url) as unknown as UserData;
 
-  console.log("data :>> ", data);
+  //USER PROFILE IMAGE PREVIEW
 
-  //UPDATE USER PROFILE DATA
   const imagePreview = async (e: React.FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement & { files: FileList };
     setProfileImage(target.files[0]);
@@ -48,6 +47,10 @@ function UserProfileData() {
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer${token}`);
     try {
+      if (!profileImage) {
+        console.log("no profile image selected");
+        return;
+      }
       const formdata = new FormData();
       formdata.append("avatar", profileImage);
 
@@ -65,7 +68,6 @@ function UserProfileData() {
       if (response.ok) {
         const result = await response.json();
         console.log("result :>> ", result);
-        //setProfileImage("");
       }
     } catch (err) {
       const error = err as Error;
@@ -73,6 +75,40 @@ function UserProfileData() {
       console.log(error.message);
     }
   };
+  //UPLOAD BUTTON
+  let uploadButton;
+
+  if (!preview) {
+    console.log("no preview");
+
+    uploadButton = (
+      <label
+        style={{ height: "10vh", width: "10vh" }}
+        className="add-image-button badge rounded-circle"
+      >
+        <MdAddAPhoto size={40} />
+        <input
+          style={{ display: "none" }}
+          type="file"
+          name="image"
+          onChange={imagePreview}
+        ></input>
+      </label>
+    );
+  }
+  if (preview) {
+    console.log("true :>> ", true);
+    uploadButton = (
+      <Button
+        id="profile-image"
+        className="confirm-image-button badge rounded-circle"
+        variant="secondary"
+        onClick={handleImageUpload}
+      >
+        <GiConfirmed size={40} color="green" />
+      </Button>
+    );
+  }
   return (
     <div>
       {/* user profile header image container */}
@@ -87,10 +123,10 @@ function UserProfileData() {
               />
             </Col>
           </Row>
-          <Button className="text-wrap badge add-cover-photo">
+          {/* <Button className="text-wrap badge add-cover-photo">
             <MdAddAPhoto size={30} />
             <div className=" ps-2">Change image</div>
-          </Button>
+          </Button> */}
         </div>
 
         {/* user profile body container */}
@@ -103,20 +139,8 @@ function UserProfileData() {
                 src={preview ? preview : data.avatar}
                 roundedCircle
               />
-              <form>
-                <Button
-                  className="add-image-button badge rounded-circle"
-                  variant="secondary"
-                  onClick={handleImageUpload}
-                >
-                  <MdAddAPhoto size={40} />
-                </Button>
-                <input
-                  className=""
-                  type="file"
-                  name="image"
-                  onChange={imagePreview}
-                ></input>
+              <form className="form-position">
+                <div>{uploadButton}</div>
               </form>
 
               <div className="d-flex justify-content-center">
@@ -149,10 +173,10 @@ function UserProfileData() {
                   <b>User info</b>
                 </Card.Header>
                 <ListGroup variant="flush">
-                  <ListGroup.Item>From: Sinj, Croatia</ListGroup.Item>
+                  <ListGroup.Item>From: Berlin, Germany</ListGroup.Item>
                   <ListGroup.Item>Member since {data.createdAt}</ListGroup.Item>
                   <ListGroup.Item>
-                    Member of BMW oldtimer club CRO
+                    Member of BMW oldtimer club DE
                   </ListGroup.Item>
                 </ListGroup>
               </Card>

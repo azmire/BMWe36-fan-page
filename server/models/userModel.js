@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema(
     imagePlaceholder: {
       type: String,
       default:
-        "https://res.cloudinary.com/dj5oelkov/image/upload/v1712059128/avatar/ogwoqhtjz0cm5ic6ijgv.jpg",
+        "https://res.cloudinary.com/dj5oelkov/image/upload/v1712230196/avatar/vdjodql3s1fwrbuh7lc8.jpg",
     },
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
   },

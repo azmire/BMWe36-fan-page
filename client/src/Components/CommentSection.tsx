@@ -10,6 +10,7 @@ function CommentSection({ display, comments, postId }: CommentsectionType) {
 
   const userId = localStorage.getItem("userId");
 
+  //ADD A COMMENT
   const addComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("comment :>> ", newComment);
@@ -53,16 +54,56 @@ function CommentSection({ display, comments, postId }: CommentsectionType) {
     }
   };
 
+  //DELETE COMMENT
+  const deleteComment = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const commentId = e.currentTarget.id;
+    console.log("commentId :>> ", commentId);
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+    myHeaders.append("Authorization", `Bearer ${token}`);
+
+    const urlencoded = new URLSearchParams();
+    urlencoded.append("commentId", commentId);
+    urlencoded.append("postId", postId);
+
+    const requestOptions = {
+      method: "DELETE",
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow" as RequestRedirect,
+    };
+    try {
+      const response = await fetch(
+        "http://localhost:9876/api/comments/deletecomment",
+        requestOptions
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log("result after deleting comment :>> ", result);
+        setExistingComments(result.existingComments.comments);
+      }
+      if (!response.ok) {
+        const result = await response.json();
+        console.log("result :>> ", result);
+      }
+    } catch (error) {
+      console.log("error :>> ", error);
+    }
+  };
+
   return (
     <>
       {/* *************** DIDSPLAY COMMENTS *************** */}
       <div className={display}>
-        {existingComments.map((comment: Comment) => {
+        {existingComments.map((comment: Comment, i) => {
           return (
-            <div key={comment.createdAt}>
+            <div key={i}>
               <div className="border-top m-2">
                 <Toast className="w-100">
-                  <Toast.Header>
+                  <Toast.Header closeButton={false}>
                     <Image
                       //user image rounded
                       style={{ height: "3vh", width: "3vh", border: "5px" }}
@@ -73,6 +114,20 @@ function CommentSection({ display, comments, postId }: CommentsectionType) {
                       {comment.author.username}
                     </strong>
                     <small>{comment.createdAt}</small>
+                    <Button
+                      id={comment._id}
+                      onClick={(e) => {
+                        deleteComment(e);
+                      }}
+                      title="delete"
+                      className="ms-2 btn-link p-0 ps-2 bg-transparent text-secondary text-decoration-none"
+                      style={{
+                        display:
+                          comment.author._id == userId ? "block" : "none",
+                      }}
+                    >
+                      X
+                    </Button>
                   </Toast.Header>
                   <Toast.Body>{comment.comment}</Toast.Body>
                 </Toast>

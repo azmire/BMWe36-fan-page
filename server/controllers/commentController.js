@@ -32,3 +32,26 @@ export const addComment = async (req, res) => {
     console.log(err);
   }
 };
+
+export const deleteComment = async (req, res) => {
+  const { commentId, postId } = req.body;
+  console.log("req.params.id :>> ", req.params.id);
+  console.log("postId :>> ", postId);
+  try {
+    const deleteComment = await CommentModel.findOneAndDelete(commentId);
+
+    const existingComments = await PostModel.findByIdAndUpdate(
+      { _id: postId },
+      {
+        $pull: { comments: commentId },
+      },
+      {
+        new: true,
+        upsert: true,
+      }
+    ).populate({ path: "comments", populate: { path: "author" } });
+    res.status(200).json({ existingComments });
+  } catch (err) {
+    console.log(err);
+  }
+};

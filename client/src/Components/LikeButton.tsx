@@ -31,7 +31,9 @@ function LikeButton({
   if (userId) {
     prevLikes = arrOfUsers.includes(userId);
   }
-  const [isLiked, setIsLiked] = useState(prevLikes); //returns true if liked,false if not
+  const [isLiked, setIsLiked] = useState<boolean>(
+    prevLikes as unknown as boolean
+  ); //returns true if liked,false if not
   const [results, setResults] = useState(usersWhoLiked);
 
   const handleLike = async () => {
@@ -79,7 +81,7 @@ function LikeButton({
   return (
     <>
       <div className="d-flex justify-content-around border-bottom  ">
-        <Card.Text style={{ fontSize: "1.5vh" }} className="mb-1">
+        <Card.Text style={{ fontSize: "2vh" }} className="mb-1">
           {results.length == 0
             ? "Be first to like this"
             : results.length == 1 && isLiked
@@ -96,7 +98,7 @@ function LikeButton({
             : 0}
         </Card.Text>
 
-        <Card.Text style={{ fontSize: "1.5vh" }}>
+        <Card.Text style={{ fontSize: "2vh" }}>
           Comments ({numOfComments})
         </Card.Text>
       </div>
@@ -111,7 +113,7 @@ function LikeButton({
           {likeButton}
           {likeText}
         </Button>
-        <PostCardModal props={props} />
+        <PostCardModal props={props} isLiked={isLiked} />
       </div>
     </>
   );

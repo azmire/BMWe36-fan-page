@@ -4,19 +4,22 @@ import Modal from "react-bootstrap/Modal";
 import { BiComment } from "react-icons/bi";
 import { FetchedData } from "../types/dataTypes";
 import { Card, Carousel, Col, Container, Image, Row } from "react-bootstrap";
-import LikeButton from "./LikeButton";
 import CommentSection from "./CommentSection";
 
 declare type PostCardModalTypes = {
   props: FetchedData;
+  isLiked: boolean;
 };
 
-function PostCardModal({ props }: PostCardModalTypes) {
+function PostCardModal({ props, isLiked }: PostCardModalTypes) {
   const [show, setShow] = useState(false);
   const [display, setDisplay] = useState("d-block");
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+  };
   const handleShow = () => setShow(true);
+  console.log("props.usersWhoLiked :>> ", props);
 
   return (
     <>
@@ -72,16 +75,23 @@ function PostCardModal({ props }: PostCardModalTypes) {
                   <Card.Text className="border-bottom mb-1">
                     <b>Engine Type:</b> {props.engineCode}
                   </Card.Text>
-                  <div className="d-flex justify-content-around border-bottom">
-                    <Card.Text>Likes: {props.like}</Card.Text>
 
-                    <Card.Text>Comments:</Card.Text>
-                  </div>
-
-                  <div className="d-flex justify-content-around">
+                  <div className="d-flex text-secondary align-items-center justify-content-around">
                     <div>
-                      {/* <LikeButton //like buton component
-                      /> */}
+                      {props.usersWhoLiked.length == 0
+                        ? "No likes yet"
+                        : props.usersWhoLiked.length == 1 && isLiked
+                        ? "You like this"
+                        : props.usersWhoLiked.length == 1
+                        ? props.usersWhoLiked.map((user) => {
+                            return user.username + " likes this";
+                          })
+                        : props.usersWhoLiked.length >= 2
+                        ? props.usersWhoLiked[0].username +
+                          " and " +
+                          (props.usersWhoLiked.length - 1) +
+                          " other like this"
+                        : 0}
                     </div>
                     <Button
                       className="text-secondary text-decoration-none align-middle"
