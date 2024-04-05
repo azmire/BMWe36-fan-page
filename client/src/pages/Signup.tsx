@@ -1,39 +1,68 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
+import { AuthContext } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
-  //const [image, setImage] = useState<File | undefined>(undefined);
+  const { checkForId, checkForToken } = useContext(AuthContext);
 
-  // const handleImageUpload = (e) => {
-  //   setImage(e.target.files[0]);
-  // };
-  if (password !== repeatPassword) {
-    console.log("Password doesn't match repeated password");
-  }
-  const handleRegister = () => {
-    const formdata = new FormData();
-    formdata.append("email", email);
-    formdata.append("username", username);
-    formdata.append("password", password);
-    // if (image) {
-    //   formdata.append("avatar", image);
-    // }
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (password !== repeatPassword) {
+      alert("Password doesn't match repeated password");
+      return;
+    } else {
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 
-    const requestOptions = {
-      method: "POST",
-      body: formdata,
-      redirect: "follow" as RequestRedirect,
-    };
+      const urlencoded = new URLSearchParams();
+      urlencoded.append("email", email);
+      urlencoded.append("username", username);
+      urlencoded.append("password", password);
 
-    fetch("http://localhost:9876/api/users/register", requestOptions)
-      .then((response) => response.json())
-      .then((result) => console.log(result))
-      .catch((error) => console.error(error));
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: urlencoded,
+        redirect: "follow" as RequestRedirect,
+      };
+      try {
+        const response = await fetch(
+          "http://localhost:9876/api/users/register",
+          requestOptions
+        );
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log("result :>> ", result);
+
+          const { token, id } = result;
+          if (token) {
+            localStorage.setItem("token", token);
+            //setUser(true);
+            checkForToken();
+          }
+          if (id) {
+            localStorage.setItem("userId", id);
+            console.log("_id :>> ", id);
+            navigate(`/myProfile/${id}`);
+          }
+        }
+
+        if (!response.ok) {
+          const result = await response.json();
+          console.log("result :>> ", result);
+        }
+      } catch (error) {
+        console.log("error :>> ", error);
+      }
+    }
   };
+  const navigate = useNavigate();
 
   return (
     <>
@@ -41,7 +70,11 @@ function Signup() {
         className="h-100 shadow mx-auto p-5 mt-4"
         style={{ width: "44rem" }}
       >
-        <Form>
+        <Form
+          onSubmit={(e) => {
+            handleRegister(e), checkForId();
+          }}
+        >
           <div className="d-flex justify-content-start">
             <h2>Create an account</h2>
           </div>
@@ -105,7 +138,9 @@ function Signup() {
             variant="success"
             type="submit"
             style={{ width: "22rem" }}
-            onClick={handleRegister}
+            // onClick={() => {
+            //   handleRegister(), checkForId();
+            // }}
           >
             Create Account
           </Button>

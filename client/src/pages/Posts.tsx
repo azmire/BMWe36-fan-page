@@ -19,8 +19,13 @@ function Posts() {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<FetchedData[] | []>([]);
   const userId = localStorage.getItem("userId");
+  const [fetchTrigger, setFetchTrigger] = useState(true);
 
-  const getData = async () => {
+  const retriggerFetch = () => {
+    setFetchTrigger(true);
+  };
+
+  const getData = async (urlToFetch: string) => {
     setLoading(true);
 
     const requestOptions = {
@@ -28,7 +33,7 @@ function Posts() {
       redirect: "follow" as RequestRedirect,
     };
     try {
-      const response = await fetch(url, requestOptions);
+      const response = await fetch(urlToFetch, requestOptions);
       if (response.ok) {
         const result = (await response.json()) as FetchedData[];
         setData(result);
@@ -38,11 +43,14 @@ function Posts() {
       console.log(error.message);
     } finally {
       setLoading(false);
+      setFetchTrigger(false);
     }
   };
   useEffect(() => {
-    getData();
-  }, []);
+    if (fetchTrigger) {
+      getData(url);
+    }
+  }, [fetchTrigger]);
 
   if (loading) {
     return (
@@ -113,6 +121,7 @@ function Posts() {
                             numOfComments={post.comments.length}
                             usersWhoLiked={post.usersWhoLiked}
                             props={post}
+                            triggerFetch={retriggerFetch}
                           />
                         </div>
                       </ProtectedRoute>

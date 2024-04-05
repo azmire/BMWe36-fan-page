@@ -10,8 +10,7 @@ import {
 } from "react-bootstrap";
 import "../styles/ProfilePage.css";
 import useFetch from "../hooks/useFetch";
-import UserProfileData from "../Components/UserProfileData";
-import { Data } from "../types/dataTypes";
+import { Data, FetchedData } from "../types/dataTypes";
 import { useParams } from "react-router-dom";
 
 declare type ProfileTypes = {
@@ -34,7 +33,6 @@ function OtherUsersProfileProfilePage() {
   const { id } = useParams();
 
   const url = `http://localhost:9876/api/users/${id}`;
-  //const url = `http://localhost:9876/api/users/660577d4b233ffaf0c2f4ad2`;
   const { data, loading } = useFetch(url);
   console.log("data from other user:>> ", data);
 
@@ -55,7 +53,7 @@ function OtherUsersProfileProfilePage() {
             <Col sm={12}>
               <Image
                 style={{ width: "80vw", height: "50vh" }}
-                src={data.imagePlaceholder}
+                src={(data as unknown as Data).imagePlaceholder}
                 fluid
               />
             </Col>
@@ -69,7 +67,7 @@ function OtherUsersProfileProfilePage() {
               <Image
                 className="profile-image " //user image rounded
                 style={{ height: "35vh", width: "35vh" }}
-                src={data.avatar}
+                src={(data as unknown as Data).avatar}
                 roundedCircle
               />
               {/* <Button
@@ -81,7 +79,7 @@ function OtherUsersProfileProfilePage() {
               </Button> */}
 
               <div className="d-flex justify-content-center">
-                <h2>{data.username}</h2>
+                <h2>{(data as unknown as Data).username}</h2>
               </div>
             </Col>
           </Row>
@@ -97,7 +95,9 @@ function OtherUsersProfileProfilePage() {
                 </Card.Header>
                 <ListGroup variant="flush">
                   <ListGroup.Item>From: Sinj, Croatia</ListGroup.Item>
-                  <ListGroup.Item>Member since {data.createdAt}</ListGroup.Item>
+                  <ListGroup.Item>
+                    Member since {(data as unknown as Data).createdAt}
+                  </ListGroup.Item>
                   <ListGroup.Item>
                     Member of BMW oldtimer club CRO
                   </ListGroup.Item>

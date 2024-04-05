@@ -5,12 +5,6 @@ function useFetch(url: string | null) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<FetchedData[] | []>([]);
   const [error, setError] = useState<string | null>(null);
-  console.log("url recieved :>> ", url);
-  //const url = `http://localhost:9876/api/users/660bf41c61b87854113a839d`;
-
-  //const token = localStorage.getItem("token");
-  // console.log("token :>> ", token);
-  // console.log("data :>> ", data);
 
   const getData = async () => {
     if (!url) return;

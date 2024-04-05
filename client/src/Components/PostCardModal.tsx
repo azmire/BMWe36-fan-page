@@ -5,21 +5,23 @@ import { BiComment } from "react-icons/bi";
 import { FetchedData } from "../types/dataTypes";
 import { Card, Carousel, Col, Container, Image, Row } from "react-bootstrap";
 import CommentSection from "./CommentSection";
+import { useNavigate } from "react-router-dom";
 
 declare type PostCardModalTypes = {
   props: FetchedData;
   isLiked: boolean;
+  triggerFetch: () => void;
 };
 
-function PostCardModal({ props, isLiked }: PostCardModalTypes) {
+function PostCardModal({ props, isLiked, triggerFetch }: PostCardModalTypes) {
   const [show, setShow] = useState(false);
   const [display, setDisplay] = useState("d-block");
 
   const handleClose = () => {
     setShow(false);
+    triggerFetch();
   };
   const handleShow = () => setShow(true);
-  console.log("props.usersWhoLiked :>> ", props);
 
   return (
     <>
@@ -107,7 +109,7 @@ function PostCardModal({ props, isLiked }: PostCardModalTypes) {
                     </Button>
                   </div>
                   <CommentSection
-                    display={display} //receieving value from comment button
+                    display={display} //receieving value from comment button-show/hide comment section
                     comments={props.comments} //array of fetched comments
                     postId={props._id}
                   />

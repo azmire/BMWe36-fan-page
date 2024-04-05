@@ -12,7 +12,6 @@ declare type ModalProps = {
 function ModalComponent({ placeholder }: ModalProps) {
   const [show, setShow] = useState(false);
   const [images, setImages] = useState<FileList | undefined>(undefined);
-  // const [image, setImage] = useState<Array<File> | undefined>([]);
   const [description, setDescription] = useState("");
   const [caption, setCaption] = useState("");
   const [year, setYear] = useState<string | null>("");
@@ -135,7 +134,12 @@ function ModalComponent({ placeholder }: ModalProps) {
           <Button variant="secondary" onClick={handleClose}>
             Clancel
           </Button>
-          <Button variant="primary" onClick={handleCreateCard}>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleCreateCard(), handleClose();
+            }}
+          >
             Post
           </Button>
         </Modal.Footer>

@@ -26,6 +26,7 @@ export declare type Images = {
 export declare type Comment = {
   comment: string;
   createdAt: string;
+  author: Author;
 };
 export declare type Author = {
   _id: string;

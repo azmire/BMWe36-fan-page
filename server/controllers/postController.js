@@ -79,6 +79,7 @@ export const getPostById = async (req, res) => {
 
     const post = await PostModel.findById(id).populate({
       path: "comments",
+      populate: { path: "author" },
     });
     if (!post) {
       return res.status(404).json({ message: "Post not found" });
@@ -95,10 +96,6 @@ export const updatePost = async (req, res) => {
   const post = await PostModel.findById({ _id: req.params.id });
 
   const isLiked = post.usersWhoLiked.includes(author);
-
-  // const action = isLiked
-  //   ? post.usersWhoLiked.pull({ _id: req.params.id })
-  //   : post.usersWhoLiked.push({ _id: req.params.id });
 
   if (!isLiked) {
     console.log("you pressed like");

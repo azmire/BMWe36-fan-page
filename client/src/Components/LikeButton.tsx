@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card } from "react-bootstrap";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6";
 import PostCardModal from "./PostCardModal";
@@ -10,6 +10,7 @@ declare type LikeButtonType = {
   numOfComments: number;
   usersWhoLiked: UsersWhoLikedType[];
   props: FetchedData;
+  triggerFetch: () => void;
 };
 declare type UsersWhoLikedType = {
   username: string;
@@ -21,6 +22,7 @@ function LikeButton({
   numOfComments,
   usersWhoLiked,
   props,
+  triggerFetch,
 }: LikeButtonType) {
   const userId = localStorage.getItem("userId");
   const arrOfUsers: string[] = [];
@@ -113,7 +115,11 @@ function LikeButton({
           {likeButton}
           {likeText}
         </Button>
-        <PostCardModal props={props} isLiked={isLiked} />
+        <PostCardModal
+          props={props}
+          isLiked={isLiked}
+          triggerFetch={triggerFetch}
+        />
       </div>
     </>
   );

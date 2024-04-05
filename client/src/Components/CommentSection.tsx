@@ -1,19 +1,23 @@
 import { Button, Form, Image, Toast } from "react-bootstrap";
 import { CommentsectionType } from "../types/commentTypes";
-import { Comment } from "../types/dataTypes";
+import { Comment, Author } from "../types/dataTypes";
 import { useState } from "react";
 
 function CommentSection({ display, comments, postId }: CommentsectionType) {
+  // const url = `http://localhost:9876/api/posts/${postId}`;
+  // let { data } = useFetch(url);
+  // console.log("fetched comments :>> ", data.comments);
+  // //let newcomments = data.comments;
+
   const [existingComments, setExistingComments] = useState(comments);
   const [newComment, setNewComment] = useState("");
   const token = localStorage.getItem("token");
-
   const userId = localStorage.getItem("userId");
 
   //ADD A COMMENT
   const addComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("comment :>> ", newComment);
+
     if (!newComment || !userId) {
       console.log("no comment");
       return;
@@ -98,43 +102,45 @@ function CommentSection({ display, comments, postId }: CommentsectionType) {
     <>
       {/* *************** DIDSPLAY COMMENTS *************** */}
       <div className={display}>
-        {existingComments.map((comment: Comment, i) => {
-          return (
-            <div key={i}>
-              <div className="border-top m-2">
-                <Toast className="w-100">
-                  <Toast.Header closeButton={false}>
-                    <Image
-                      //user image rounded
-                      style={{ height: "3vh", width: "3vh", border: "5px" }}
-                      src={comment.author.avatar}
-                      roundedCircle
-                    />
-                    <strong className="me-auto">
-                      {comment.author.username}
-                    </strong>
-                    <small>{comment.createdAt}</small>
-                    <Button
-                      id={comment._id}
-                      onClick={(e) => {
-                        deleteComment(e);
-                      }}
-                      title="delete"
-                      className="ms-2 btn-link p-0 ps-2 bg-transparent text-secondary text-decoration-none"
-                      style={{
-                        display:
-                          comment.author._id == userId ? "block" : "none",
-                      }}
-                    >
-                      X
-                    </Button>
-                  </Toast.Header>
-                  <Toast.Body>{comment.comment}</Toast.Body>
-                </Toast>
+        {existingComments &&
+          existingComments.length &&
+          existingComments.map((comment: any, i: number) => {
+            return (
+              <div key={i}>
+                <div className="border-top m-2">
+                  <Toast className="w-100">
+                    <Toast.Header closeButton={false}>
+                      <Image
+                        //user image rounded
+                        style={{ height: "3vh", width: "3vh", border: "5px" }}
+                        src={comment.author.avatar}
+                        roundedCircle
+                      />
+                      <strong className="me-auto">
+                        {comment.author.username}
+                      </strong>
+                      <small>{comment.createdAt}</small>
+                      <Button
+                        id={comment._id}
+                        onClick={(e) => {
+                          deleteComment(e);
+                        }}
+                        title="delete"
+                        className="ms-2 btn-link p-0 ps-2 bg-transparent text-secondary text-decoration-none"
+                        style={{
+                          display:
+                            comment.author._id == userId ? "block" : "none",
+                        }}
+                      >
+                        X
+                      </Button>
+                    </Toast.Header>
+                    <Toast.Body>{comment.comment}</Toast.Body>
+                  </Toast>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
         {/* *************** WRITE A COMMENT*************** */}
         <div className="border-top m-2">
           <Form

@@ -57,7 +57,24 @@ export const addUser = async (req, res) => {
         password: hashedPassword,
       });
       const result = await newUser.save();
-      res.status(200).json(result);
+      //res.status(200).json(result);
+      const verified = await verifyPassword(password, hashedPassword);
+      if (verified) {
+        const token = generateToken(newUser);
+        if (token) {
+          console.log("user verified");
+          res
+            .status(201)
+            .json({ message: "User signed up", token: token, id: newUser._id });
+        } else {
+          res.status(500).json({ message: "Failed to generate token" });
+          console.log("Failed to generate token");
+        }
+      } else {
+        res.status(500).json({ message: "Wrong password" });
+
+        console.log("Wrong password");
+      }
     } catch (e) {
       console.log(e);
     }

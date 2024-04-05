@@ -136,7 +136,7 @@ function UserProfileData() {
               <Image
                 className="profile-image " //user image rounded
                 style={{ height: "35vh", width: "35vh" }}
-                src={preview ? preview : data.avatar}
+                src={(preview as string) ? (preview as string) : data.avatar}
                 roundedCircle
               />
               <form className="form-position">
