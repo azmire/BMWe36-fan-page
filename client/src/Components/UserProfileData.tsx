@@ -83,8 +83,8 @@ function UserProfileData() {
 
     uploadButton = (
       <label
-        style={{ height: "10vh", width: "10vh" }}
-        className="add-image-button badge rounded-circle"
+        style={{ height: "8vh", width: "8vh" }}
+        className=" add-image-button  badge rounded-circle"
       >
         <MdAddAPhoto size={40} />
         <input
@@ -97,7 +97,6 @@ function UserProfileData() {
     );
   }
   if (preview) {
-    console.log("true :>> ", true);
     uploadButton = (
       <Button
         id="profile-image"
@@ -143,7 +142,7 @@ function UserProfileData() {
                 <div>{uploadButton}</div>
               </form>
 
-              <div className="d-flex justify-content-center">
+              <div className="d-flex justify-content-center mt-4">
                 <h2>{data.username}</h2>
               </div>
             </Col>

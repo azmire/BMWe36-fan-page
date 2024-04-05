@@ -9,19 +9,19 @@
 
 .add-image-button {
   margin-top: -6vh;
-  margin-left: -2vh;
+  margin-left: 0vw;
   border: 5px solid white;
   background-color: rgba(158, 157, 157, 0.356);
 }
 .confirm-image-button {
   margin-top: -6vh;
-  margin-left: -2vh;
+  margin-left: 0vw;
   border: 5px solid rgb(255, 255, 255);
   background-color: rgba(18, 165, 25, 0.493);
 }
 .form-position {
   margin-top: -8vh;
-  margin-left: 28vh;
+  margin-left: 13vw;
 }
 .add-cover-photo {
   display: flex;

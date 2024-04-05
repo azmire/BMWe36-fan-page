@@ -2,19 +2,28 @@ import { useContext } from "react";
 import { Container, Nav } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
 import { MdAccountCircle, MdLogout } from "react-icons/md";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
 function NavbarComponent() {
   const { user, logout } = useContext(AuthContext);
   const userId = localStorage.getItem("userId");
+  const navigate = useNavigate();
   let link = "";
   let navIcon = <MdAccountCircle title="Login" size={30} />;
   if (!user) {
     link = "/login";
   }
   if (user) {
-    navIcon = <MdLogout onClick={logout} title="Logout" size={30} />;
+    navIcon = (
+      <MdLogout
+        onClick={() => {
+          logout(), navigate("/");
+        }}
+        title="Logout"
+        size={30}
+      />
+    );
   }
   return (
     <>

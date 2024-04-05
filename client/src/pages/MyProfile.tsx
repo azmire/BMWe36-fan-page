@@ -44,9 +44,9 @@ function MyProfile() {
       {/* only cards posted by user */}
       <div className="background pt-3">
         {(data as unknown as ProfileTypes).posts &&
-          (data as unknown as ProfileTypes).posts.map((post) => {
+          (data as unknown as ProfileTypes).posts.map((post, i) => {
             return (
-              <Container className="pb-3 ">
+              <Container key={i} className="pb-3 ">
                 <Row className="d-flex justify-content-center">
                   <Col className="col-xl-6">
                     <Card>
@@ -54,9 +54,9 @@ function MyProfile() {
                       <Carousel fade>
                         {(post as unknown as ProfileData).cardImage &&
                           (post as unknown as ProfileData).cardImage.map(
-                            (image) => {
+                            (image, i) => {
                               return (
-                                <Carousel.Item interval={9999999}>
+                                <Carousel.Item key={i} interval={9999999}>
                                   <Card.Img src={image} />
                                   <Carousel.Caption></Carousel.Caption>
                                 </Carousel.Item>
