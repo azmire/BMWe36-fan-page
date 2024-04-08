@@ -27,7 +27,6 @@ function MyProfile() {
 
   const url = `http://localhost:9876/api/users/${id}`;
 
-  console.log("url :>> ", url);
   const { data, loading } = useFetch(url);
 
   if (loading) {

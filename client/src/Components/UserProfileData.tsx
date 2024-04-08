@@ -42,7 +42,7 @@ function UserProfileData() {
     };
     file.readAsDataURL(target.files[0]);
   };
-
+  //USER PROFILE IMAGE UPLOAD
   const handleImageUpload = async () => {
     const myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer${token}`);

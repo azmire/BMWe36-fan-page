@@ -6,7 +6,6 @@ import {
   updatePost,
 } from "../controllers/postController.js";
 import { multerUpload } from "../middleware/multer.js";
-import jwtAuth from "../middleware/jwtAuth.js";
 
 const postRouter = express.Router();
 

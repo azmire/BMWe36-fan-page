@@ -114,10 +114,11 @@ function Signup() {
             <Form.Label>Password</Form.Label>
             <Form.Control
               className="bg-light"
-              type="text"
+              type="password"
               placeholder="Password"
               id="password"
               value={password}
+              autoComplete="off"
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
@@ -125,10 +126,11 @@ function Signup() {
             <Form.Label>Repeat Password</Form.Label>
             <Form.Control
               className="bg-light"
-              type="text"
+              type="password"
               id="repeatPassword"
               placeholder="Repeat Password"
               value={repeatPassword}
+              autoComplete="off"
               onChange={(e) => setRepeatPassword(e.target.value)}
             />
           </Form.Group>

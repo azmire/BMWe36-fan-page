@@ -8,7 +8,7 @@ import {
   Row,
   Spinner,
 } from "react-bootstrap";
-import LikeButton from "../Components/LikeButton";
+import LikeCommentSection from "../Components/LikeCommentSection";
 import { Key, useEffect, useState } from "react";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import { FetchedData } from "../types/dataTypes";
@@ -87,6 +87,7 @@ function Posts() {
                       />
                       <b>{post.author.username}</b>
                     </Nav.Link>
+
                     <Carousel fade>
                       {post.cardImage.map((image) => {
                         return (
@@ -115,7 +116,7 @@ function Posts() {
                       </Card.Text>
                       <ProtectedRoute>
                         <div>
-                          <LikeButton //like button component
+                          <LikeCommentSection //like button component
                             liked={post.liked}
                             postId={post._id}
                             numOfComments={post.comments.length}

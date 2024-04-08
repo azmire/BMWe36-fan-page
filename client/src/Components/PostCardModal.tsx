@@ -4,8 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import { BiComment } from "react-icons/bi";
 import { FetchedData } from "../types/dataTypes";
 import { Card, Carousel, Col, Container, Image, Row } from "react-bootstrap";
-import CommentSection from "./CommentSection";
-import { useNavigate } from "react-router-dom";
+import Comments from "./Comments";
 
 declare type PostCardModalTypes = {
   props: FetchedData;
@@ -108,7 +107,7 @@ function PostCardModal({ props, isLiked, triggerFetch }: PostCardModalTypes) {
                       Comments
                     </Button>
                   </div>
-                  <CommentSection
+                  <Comments
                     display={display} //receieving value from comment button-show/hide comment section
                     comments={props.comments} //array of fetched comments
                     postId={props._id}

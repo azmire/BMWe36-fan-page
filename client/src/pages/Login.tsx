@@ -90,10 +90,11 @@ function Login() {
             <Form.Label>Password</Form.Label>
             <Form.Control
               className="bg-light"
-              type="text"
+              type="password"
               placeholder="Password"
               id="password"
               value={password}
+              autoComplete="off"
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
