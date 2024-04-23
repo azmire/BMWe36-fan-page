@@ -9,7 +9,7 @@ import {
   Spinner,
 } from "react-bootstrap";
 import LikeCommentSection from "../Components/LikeCommentSection";
-import { Key, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import { FetchedData } from "../types/dataTypes";
 import { Link } from "react-router-dom";
