@@ -1,14 +1,8 @@
 import { Button, Form, Image, Toast } from "react-bootstrap";
 import { CommentsectionType } from "../types/commentTypes";
-import { Comment, Author } from "../types/dataTypes";
 import { useState } from "react";
 
 function CommentSection({ display, comments, postId }: CommentsectionType) {
-  // const url = `http://localhost:9876/api/posts/${postId}`;
-  // let { data } = useFetch(url);
-  // console.log("fetched comments :>> ", data.comments);
-  // //let newcomments = data.comments;
-
   const [existingComments, setExistingComments] = useState(comments);
   const [newComment, setNewComment] = useState("");
   const token = localStorage.getItem("token");

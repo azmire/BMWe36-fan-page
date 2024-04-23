@@ -17,7 +17,6 @@ function ModalComponent({ placeholder }: ModalProps) {
   const [year, setYear] = useState<string | null>("");
   const [engine, setEngine] = useState<string | null>("");
   const [model, setModel] = useState<string | null>("");
-  const [message, setMessage] = useState("");
   const id = localStorage.getItem("userId");
 
   const handleClose = () => setShow(false);
@@ -26,18 +25,12 @@ function ModalComponent({ placeholder }: ModalProps) {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     setImages((e.target as any).files);
   };
-  // console.log("message :>> ", message);
-
-  // if (images == undefined) {
-  //   setMessage("No image selected.");
-  // } else {
   const handleCreateCard = () => {
     if (images && model && year && engine && caption && id) {
       const formdata = new FormData();
       for (let i = 0; i < images.length; i++) {
         formdata.append(`cardImage${i + 1}`, images[i]);
       }
-      setMessage("Uploading images");
       formdata.append("description", description);
       formdata.append("caption", caption);
       formdata.append("carModel", model);

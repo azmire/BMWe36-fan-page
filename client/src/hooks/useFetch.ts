@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { FetchedData } from "../types/dataTypes";
+import { ProfileTypes } from "../types/dataTypes";
 
 function useFetch(url: string | null) {
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState<FetchedData[] | []>([]);
+  const [data, setData] = useState<ProfileTypes | []>([]);
   const [error, setError] = useState<string | null>(null);
 
   const getData = async () => {
@@ -23,7 +23,7 @@ function useFetch(url: string | null) {
     try {
       const response = await fetch(url, requestOptions);
       if (response.ok) {
-        const result = (await response.json()) as FetchedData[];
+        const result = (await response.json()) as ProfileTypes;
         setData(result);
         setError(null);
       }

@@ -52,7 +52,6 @@ function NavbarComponent() {
             <Nav>
               <Nav.Link as={Link} to={link}>
                 {navIcon}
-                {/* <MdAccountCircle size={30} /> */}
               </Nav.Link>
             </Nav>
           </Navbar.Collapse>

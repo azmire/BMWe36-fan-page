@@ -134,15 +134,12 @@ function Signup() {
               onChange={(e) => setRepeatPassword(e.target.value)}
             />
           </Form.Group>
-          {/* <input type="file" name="image" onChange={handleImageUpload} /> */}
+
           <Button
             className="d-grid col-12 mx-auto mt-4"
             variant="success"
             type="submit"
             style={{ width: "22rem" }}
-            // onClick={() => {
-            //   handleRegister(), checkForId();
-            // }}
           >
             Create Account
           </Button>

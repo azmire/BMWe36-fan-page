@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
@@ -103,7 +103,6 @@ function Login() {
             className="d-grid col-12 mx-auto mt-4"
             variant="dark"
             type="submit"
-            // onClick={handleLogIn}
           >
             Log in
           </Button>

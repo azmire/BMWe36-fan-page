@@ -122,10 +122,6 @@ function UserProfileData() {
               />
             </Col>
           </Row>
-          {/* <Button className="text-wrap badge add-cover-photo">
-            <MdAddAPhoto size={30} />
-            <div className=" ps-2">Change image</div>
-          </Button> */}
         </div>
 
         {/* user profile body container */}

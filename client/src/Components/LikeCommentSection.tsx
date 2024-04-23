@@ -60,7 +60,6 @@ function LikeButton({
           console.log("result after like :>> ", result);
           setResults(result.usersWhoLiked);
           setIsLiked(!isLiked);
-          //setUsersWhoLiked(result.usersWhoLiked);
         }
         if (!response.ok) {
           const result = await response.json();

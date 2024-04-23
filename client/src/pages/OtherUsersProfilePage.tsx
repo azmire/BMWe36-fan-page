@@ -10,24 +10,8 @@ import {
 } from "react-bootstrap";
 import "../styles/ProfilePage.css";
 import useFetch from "../hooks/useFetch";
-import { Data, FetchedData } from "../types/dataTypes";
 import { useParams } from "react-router-dom";
-
-declare type ProfileTypes = {
-  posts: ProfileData[];
-};
-declare type ProfileData = {
-  avatar: string;
-  imagePlaceholder: string;
-  createdAt: string;
-  username: string;
-  _id: string;
-  cardImage: string[];
-  description: string;
-  carModel: string;
-  productionYear: string;
-  engineCode: string;
-};
+import { ProfileData, ProfileTypes } from "../types/dataTypes";
 
 function OtherUsersProfileProfilePage() {
   const { id } = useParams();
@@ -53,7 +37,7 @@ function OtherUsersProfileProfilePage() {
             <Col sm={12}>
               <Image
                 style={{ width: "80vw", height: "50vh" }}
-                src={(data as unknown as Data).imagePlaceholder}
+                src={(data as unknown as ProfileData).imagePlaceholder}
                 fluid
               />
             </Col>
@@ -67,19 +51,12 @@ function OtherUsersProfileProfilePage() {
               <Image
                 className="profile-image " //user image rounded
                 style={{ height: "35vh", width: "35vh" }}
-                src={(data as unknown as Data).avatar}
+                src={(data as unknown as ProfileData).avatar}
                 roundedCircle
               />
-              {/* <Button
-                className="add-image-button badge rounded-circle"
-                variant="secondary"
-                //onChange={(e) => uploadImage(e)}
-              >
-                <MdAddAPhoto size={40} />
-              </Button> */}
 
               <div className="d-flex justify-content-center">
-                <h2>{(data as unknown as Data).username}</h2>
+                <h2>{(data as unknown as ProfileData).username}</h2>
               </div>
             </Col>
           </Row>
@@ -96,7 +73,7 @@ function OtherUsersProfileProfilePage() {
                 <ListGroup variant="flush">
                   <ListGroup.Item>From: Sinj, Croatia</ListGroup.Item>
                   <ListGroup.Item>
-                    Member since {(data as unknown as Data).createdAt}
+                    Member since {(data as unknown as ProfileData).createdAt}
                   </ListGroup.Item>
                   <ListGroup.Item>
                     Member of BMW oldtimer club CRO
@@ -134,19 +111,19 @@ function OtherUsersProfileProfilePage() {
                       <Card.Body>
                         <Card.Title>Card Title</Card.Title>
                         <Card.Text>
-                          {(post as unknown as Data).description}
+                          {(post as unknown as ProfileData).description}
                         </Card.Text>
                         <Card.Text>
                           <b>Car model: </b>
-                          {(post as unknown as Data).carModel}
+                          {(post as unknown as ProfileData).carModel}
                         </Card.Text>
                         <Card.Text>
                           <b>Production Year: </b>
-                          {(post as unknown as Data).productionYear}
+                          {(post as unknown as ProfileData).productionYear}
                         </Card.Text>
                         <Card.Text>
                           <b>Engine code: </b>
-                          {(post as unknown as Data).engineCode}
+                          {(post as unknown as ProfileData).engineCode}
                         </Card.Text>
                       </Card.Body>
                     </Card>

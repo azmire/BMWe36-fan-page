@@ -13,7 +13,7 @@ export declare type FetchedData = {
   caption: string;
   comments: Comment[];
   liked: boolean;
-  data: Data;
+  data: ProfileData;
   author: Author;
   usersWhoLiked: Author[];
 };
@@ -41,15 +41,19 @@ export declare type Author = {
 };
 
 export declare type UserData = {
-  data: Data;
+  data: ProfileData;
 };
-export declare type Data = {
+
+export declare type ProfileTypes = {
+  posts: ProfileData[];
+};
+export declare type ProfileData = {
   avatar: string;
   imagePlaceholder: string;
   createdAt: string;
   username: string;
   _id: string;
-  cardImage: string;
+  cardImage: string[];
   description: string;
   carModel: string;
   productionYear: string;

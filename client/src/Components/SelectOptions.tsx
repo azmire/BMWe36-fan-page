@@ -10,8 +10,6 @@ declare type SelectOptionType = {
 function SelectOptions({ setYear, setEngine, setModel }: SelectOptionType) {
   return (
     <>
-      {/* <button onClick={() => setModel("clicked")}>Click me</button> */}
-
       <Form.Select
         aria-label="Variant"
         onChange={(e) => setModel(e.target.value)}

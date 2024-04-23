@@ -63,7 +63,7 @@ function Posts() {
   return (
     <>
       {data &&
-        data.map((post, i) => {
+        data.map((post) => {
           console.log("post :>> ", post);
           return (
             <Container key={post._id} className="py-3">
@@ -89,12 +89,9 @@ function Posts() {
                     </Nav.Link>
 
                     <Carousel fade>
-                      {post.cardImage.map((image) => {
+                      {post.cardImage.map((image, i) => {
                         return (
-                          <Carousel.Item
-                            key={image as unknown as Key}
-                            interval={9999999}
-                          >
+                          <Carousel.Item key={i} interval={9999999}>
                             <Card.Img src={image as unknown as string} />
                             <Carousel.Caption></Carousel.Caption>
                           </Carousel.Item>
