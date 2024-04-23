@@ -12,11 +12,12 @@ import "../styles/ProfilePage.css";
 import useFetch from "../hooks/useFetch";
 import { useParams } from "react-router-dom";
 import { ProfileData, ProfileTypes } from "../types/dataTypes";
+import { baseUrl } from "../utils/baseUrl";
 
 function OtherUsersProfileProfilePage() {
   const { id } = useParams();
 
-  const url = `http://localhost:9876/api/users/${id}`;
+  const url = `${baseUrl}/api/users/${id}`;
   const { data, loading } = useFetch(url);
   console.log("data from other user:>> ", data);
 

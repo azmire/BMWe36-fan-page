@@ -5,12 +5,13 @@ import UserProfileData from "../Components/UserProfileData";
 import { useParams } from "react-router-dom";
 import useFetch from "../hooks/useFetch";
 import { ProfileData, ProfileTypes } from "../types/dataTypes";
+import { baseUrl } from "../utils/baseUrl";
 
 function MyProfile() {
   const params = useParams();
   const id = params.id;
 
-  const url = `http://localhost:9876/api/users/${id}`;
+  const url = `${baseUrl}/api/users/${id}`;
 
   const { data, loading } = useFetch(url);
 

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
+import { baseUrl } from "../utils/baseUrl";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -30,7 +31,7 @@ function Login() {
       };
       try {
         const response = await fetch(
-          "http://localhost:9876/api/users/login",
+          `${baseUrl}/api/users/login`,
           requestOptions
         );
 

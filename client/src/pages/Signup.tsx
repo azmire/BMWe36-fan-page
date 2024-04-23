@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { AuthContext } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../utils/baseUrl";
 
 function Signup() {
   const [username, setUsername] = useState("");
@@ -32,7 +33,7 @@ function Signup() {
       };
       try {
         const response = await fetch(
-          "http://localhost:9876/api/users/register",
+          `${baseUrl}/api/users/register`,
           requestOptions
         );
 

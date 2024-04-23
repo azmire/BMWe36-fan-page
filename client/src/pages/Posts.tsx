@@ -13,9 +13,10 @@ import { useEffect, useState } from "react";
 import ProtectedRoute from "../Components/ProtectedRoute";
 import { FetchedData } from "../types/dataTypes";
 import { Link } from "react-router-dom";
+import { baseUrl } from "../utils/baseUrl";
 
 function Posts() {
-  const url = "http://localhost:9876/api/posts/allposts"; //fetching all posts from db
+  const url = `${baseUrl}/api/posts/allposts`; //fetching all posts from db
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<FetchedData[] | []>([]);
   const userId = localStorage.getItem("userId");

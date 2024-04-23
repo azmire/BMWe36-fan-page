@@ -16,6 +16,7 @@ import { MdAddAPhoto } from "react-icons/md";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { GiConfirmed } from "react-icons/gi";
+import { baseUrl } from "../utils/baseUrl";
 
 function UserProfileData() {
   const params = useParams();
@@ -26,7 +27,7 @@ function UserProfileData() {
   console.log("preview", preview);
 
   //FETCH LOGGED IN USER DATA
-  const url = `http://localhost:9876/api/users/${id}`;
+  const url = `${baseUrl}/api/users/${id}`;
   let { data } = useFetch(url) as unknown as UserData;
 
   //USER PROFILE IMAGE PREVIEW
@@ -62,7 +63,7 @@ function UserProfileData() {
       };
 
       const response = await fetch(
-        `http://localhost:9876/api/users/update/${id}`,
+        `${baseUrl}/api/users/update/${id}`,
         requestOptions
       );
       if (response.ok) {

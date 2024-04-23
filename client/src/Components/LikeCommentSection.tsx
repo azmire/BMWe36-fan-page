@@ -3,6 +3,7 @@ import { Button, Card } from "react-bootstrap";
 import { FaRegThumbsDown, FaRegThumbsUp } from "react-icons/fa6";
 import PostCardModal from "./PostCardModal";
 import { FetchedData } from "../types/dataTypes";
+import { baseUrl } from "../utils/baseUrl";
 
 declare type LikeButtonType = {
   liked: boolean;
@@ -51,7 +52,7 @@ function LikeButton({
       };
       try {
         const response = await fetch(
-          `http://localhost:9876/api/posts/${postId}`,
+          `${baseUrl}/api/posts/${postId}`,
           requestOptions
         );
         console.log("response :>> ", response);

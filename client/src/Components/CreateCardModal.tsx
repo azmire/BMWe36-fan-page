@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import SelectOptions from "./SelectOptions";
 import "../styles/UploadImageButton.css";
+import { baseUrl } from "../utils/baseUrl";
 
 declare type ModalProps = {
   placeholder: string;
@@ -45,7 +46,7 @@ function ModalComponent({ placeholder }: ModalProps) {
         redirect: "follow" as RequestRedirect,
       };
 
-      fetch("http://localhost:9876/api/posts/addpost", requestOptions)
+      fetch(`${baseUrl}/api/posts/addpost`, requestOptions)
         .then((response) => response.json())
         .then((result) => {
           console.log(result);

@@ -1,6 +1,7 @@
 import { Button, Form, Image, Toast } from "react-bootstrap";
 import { CommentsectionType } from "../types/commentTypes";
 import { useState } from "react";
+import { baseUrl } from "../utils/baseUrl";
 
 function CommentSection({ display, comments, postId }: CommentsectionType) {
   const [existingComments, setExistingComments] = useState(comments);
@@ -32,7 +33,7 @@ function CommentSection({ display, comments, postId }: CommentsectionType) {
       };
       try {
         const response = await fetch(
-          "http://localhost:9876/api/comments/addcomment",
+          `${baseUrl}/api/comments/addcomment`,
           requestOptions
         );
 
@@ -74,7 +75,7 @@ function CommentSection({ display, comments, postId }: CommentsectionType) {
     };
     try {
       const response = await fetch(
-        "http://localhost:9876/api/comments/deletecomment",
+        `${baseUrl}/api/comments/deletecomment`,
         requestOptions
       );
 
